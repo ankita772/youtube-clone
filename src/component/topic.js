@@ -47,14 +47,16 @@ setNext(next-1);
       m: 1,
       justifyContent: 'space-between',
       transition:3
-      }}>
+      }}
+      className="topicsBar">
   
       <IconButton onClick={handleBack} disabled={next === 0}>
         <KeyboardArrowLeft/>
       </IconButton>
     
        {allTopic.map((i,index) => (
-         ((index>next) && (index<next+12))?(<Fab variant="extended" size="small" color="primary" aria-label={i}>
+         ((index>next) && (index<next+12))?(
+           <Fab variant="extended" size="small" color="primary" aria-label={i}>
            {i}
         </Fab>):""
       ))}

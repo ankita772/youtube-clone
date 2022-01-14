@@ -5,6 +5,7 @@
 body {
   width: 100vw;
   height: 100vh;
+
 }
 .youtubeIcon {
   color: red;
@@ -17,15 +18,73 @@ body {
   display: flex;
   flex-direction: row;
 }
-
 .video{
-  margin: 1rem;
+  margin-left:1.5rem;
+  margin-bottom: 1rem;
 }
-.vide span{
-  font-size:x-small;
+.video span{
+  margin-top: 2px;
+  font-size:small;
 }
 img{
   border-radius: 50%;
 
 }
 
+.parent{
+  width:100vw;
+  height: auto;
+  margin-top: 6rem;
+  display: flex;
+  flex-direction:row;
+}
+.videoContainer{
+  margin-left: 2rem;
+}
+.videoSuggestionListContainer{
+  margin-left: 1rem;
+  height: 35rem;
+  overflow:scroll;
+  }
+  .videoSuggestionListContainer::-webkit-scrollbar{
+  display: none;
+  } 
+  
+/* .videoPlayer{
+  display: block;
+  width: 100%;
+} */
+.suggestion{
+  height: 8rem;
+  text-align: justify;
+  display: flex;
+  flex-direction: row;
+  font-size: small;
+  overflow:none;
+}
+.suggestion span{
+  margin: 1rem;
+}
+
+  
+
+  @media (max-width: 411px){
+    .parent {
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .videoContainer{
+      margin: 0px;
+  
+    }
+    .videoSuggestionListContainer{
+      height: auto;
+      
+      }
+    .suggestion{
+        margin-left: 1rem;
+        margin-top: 2rem;
+      } 
+     
+  } 
