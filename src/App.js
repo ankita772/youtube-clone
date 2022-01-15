@@ -7,13 +7,12 @@ import Videopage from "./page/videopage";
 function App() {
   return (
     <>
-      {/* <BrowserRouter>
+      <BrowserRouter>
         <Routes>
-          <Route path="/" exact element={<Homepage />} />
+          <Route path="/" element={<Homepage />} />
+          <Route path="/videopage" exact element={<Videopage />} />
         </Routes>
-      </BrowserRouter> */}
-      {/* <Videopage /> */}
-      <Homepage />
+      </BrowserRouter>
     </>
   );
 }

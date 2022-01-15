@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 import Header from "../component/header.js";
 import Topic from "../component/topic.js";
 import VideoSuggestion from "../component/videoSuggestion.js";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {
   AppBar,
   Toolbar,
@@ -10,14 +10,13 @@ import {
   useScrollTrigger,
   Box,
   Fab,
-  Zoom
-} from '@mui/material';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
+  Zoom,
+} from "@mui/material";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function ScrollTop(props) {
   const { children, window } = props;
-  
+
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
     disableHysteresis: true,
@@ -26,13 +25,13 @@ function ScrollTop(props) {
 
   const handleClick = (event) => {
     const anchor = (event.target.ownerDocument || document).querySelector(
-      '#back-to-top-anchor',
+      "#back-to-top-anchor"
     );
 
     if (anchor) {
       anchor.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
+        behavior: "smooth",
+        block: "center",
       });
     }
   };
@@ -42,7 +41,7 @@ function ScrollTop(props) {
       <Box
         onClick={handleClick}
         role="presentation"
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        sx={{ position: "fixed", bottom: 16, right: 16 }}
       >
         {children}
       </Box>
@@ -55,18 +54,18 @@ ScrollTop.propTypes = {
   window: PropTypes.func,
 };
 
-const Homepage=(props)=>{
+const Homepage = (props) => {
   return (
     <React.Fragment>
       <CssBaseline />
       <AppBar>
-        <Header/>
+        <Header />
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
-      
-        <Topic/>
-        <VideoSuggestion/>
-      
+
+      {/* <Topic/> */}
+      <VideoSuggestion />
+
       <ScrollTop {...props}>
         <Fab color="primary" size="x-small" aria-label="scroll back to top">
           <KeyboardArrowUpIcon />
@@ -74,5 +73,5 @@ const Homepage=(props)=>{
       </ScrollTop>
     </React.Fragment>
   );
-}
+};
 export default Homepage;
