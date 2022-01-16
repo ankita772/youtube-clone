@@ -2,7 +2,9 @@ import * as React from "react";
 import ReactPlayer from "react-player";
 import Header from "../component/header.js";
 import VideoSuggestionList from "../component/videoSuggestionList.js";
-import { AppBar, CssBaseline, Grid, Typography } from "@mui/material";
+import { AppBar, CssBaseline, Grid, Typography, Box } from "@mui/material";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 
 const Videopage = (props) => {
   return (
@@ -26,7 +28,17 @@ const Videopage = (props) => {
             controls
             playing
           />
-          <Typography>jdkfhdklfg ,dfvdfkvmf lkdfvjfklm flkbndk</Typography>
+          <Typography component="div" sx={{ fontSize: 18, mt: 2 }}>
+            Bankers algorithm
+          </Typography>
+          <div style={{ display: "flex", marginTop: "2%" }}>
+            <Box sx={{ fontSize: 14 }}>100k</Box>
+            <Box sx={{ fontSize: 14, ml: 1 }}>• 1 year ago</Box>
+            <div style={{ marginleft: "50px" }}>
+              <ThumbUpAltIcon />
+              <ThumbDownAltIcon />
+            </div>
+          </div>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4}>
           <VideoSuggestionList />
