@@ -5,6 +5,8 @@ import VideoSuggestionList from "../component/videoSuggestionList.js";
 import { AppBar, CssBaseline, Grid, Typography, Box } from "@mui/material";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import ShareIcon from "@mui/icons-material/Share";
+import SaveAltIcon from "@mui/icons-material/SaveAlt";
 
 const Videopage = (props) => {
   return (
@@ -28,17 +30,38 @@ const Videopage = (props) => {
             controls
             playing
           />
-          <Typography component="div" sx={{ fontSize: 18, mt: 2 }}>
+          <Typography
+            component="div"
+            sx={{ fontSize: 18, fontWeight: "bold", mt: 2 }}
+          >
             Bankers algorithm
           </Typography>
-          <div style={{ display: "flex", marginTop: "2%" }}>
-            <Box sx={{ fontSize: 14 }}>100k</Box>
-            <Box sx={{ fontSize: 14, ml: 1 }}>• 1 year ago</Box>
-            <div style={{ marginleft: "50px" }}>
+          <Grid container sx={{ display: "flex" }}>
+            <Grid xs={12} md={4} lg={4} sx={{ display: "flex" }}>
+              <Box sx={{ fontSize: 14 }}>100k</Box>
+              <Box sx={{ fontSize: 14, ml: 1 }}>• 1 year ago</Box>
+            </Grid>
+            <Grid
+              xs={11}
+              md={4}
+              lg={8}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                mt: { xs: 2, md: 0, lg: 0 },
+                mb: { xs: 2, md: 0, lg: 0 },
+              }}
+            >
               <ThumbUpAltIcon />
+              <Typography>Like</Typography>
               <ThumbDownAltIcon />
-            </div>
-          </div>
+              <Typography>Dislike</Typography>
+              <ShareIcon />
+              <Typography>Share</Typography>
+              <SaveAltIcon />
+              <Typography>Save</Typography>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4}>
           <VideoSuggestionList />
