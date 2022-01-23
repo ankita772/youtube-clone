@@ -1,5 +1,8 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import bird from "../assets/bird.jpeg";
+import Signup from "../childComponent/signup";
+import Signin from "../childComponent/signin";
 import { styled, alpha } from "@mui/material/styles";
 import {
   AppBar,
@@ -18,13 +21,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Button,
-  Modal,
-  OutlinedInput,
-  InputLabel,
-  InputAdornment,
-  FormControl,
-  TextField,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -54,10 +50,6 @@ import LanguageIcon from "@mui/icons-material/Language";
 import KeyboardOutlinedIcon from "@mui/icons-material/KeyboardOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
-import {} from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -99,56 +91,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "1px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
 export default function PrimarySearchAppBar() {
+  const navigate = useNavigate();
   const [isSignin, setIsSignin] = React.useState(false);
   const [accountbarOpen, setAccountbarOpen] = React.useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [modalOpen, setModalOpen] = React.useState(false);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleAccount = () => {
     setAccountbarOpen(true);
-  };
-  const signIn = () => {
-    setModalOpen(true);
-    // setIsSignin(true);
-  };
-
-  const [values, setValues] = React.useState({
-    email: "",
-    password: "",
-    showPassword: false,
-  });
-
-  const handlePassword = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  const handleEmail = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
   };
 
   const handleMobileMenuClose = () => {
@@ -403,81 +355,14 @@ export default function PrimarySearchAppBar() {
     </Menu>
   );
 
-  const passwordField = () => (
-    <FormControl sx={{ m: 1, width: "32ch" }} variant="outlined">
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-      <OutlinedInput
-        id="outlined-adornment-password"
-        type={values.showPassword ? "text" : "password"}
-        value={values.password}
-        onChange={handlePassword("password")}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
-              edge="end"
-            >
-              {values.showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        }
-        label="Password"
-      />
-    </FormControl>
-  );
-
-  const emailField = () => (
-    <TextField
-      id="demo-helper-text-misaligned-no-helper"
-      label="Email Id"
-      type="email"
-      value={values.email}
-      onChange={handleEmail("email")}
-      sx={{ m: 1, width: "32ch" }}
-    />
-  );
-
   const preSignin = () => (
     <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}>
       <IconButton size="large" color="inherit" aria-label="moreIcon">
         <MoreIcon />
       </IconButton>
 
-      <Button variant="outlined" color="error" onClick={signIn}>
-        Sign IN
-      </Button>
-      <Modal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h5"
-            component="h2"
-            sx={{ textAlign: "center" }}
-          >
-            Google
-          </Typography>
-          <Box sx={{ ml: 2, mt: 1 }}>
-            {emailField()}
-            {passwordField()}
-          </Box>
-          <Box sx={{ textAlign: "center", mt: 1 }}>
-            <Button
-              variant="contained"
-              color="success"
-              sx={{ textAlign: "center" }}
-            >
-              Success
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+      <Signup />
+      <Signin />
     </Box>
   );
 
@@ -510,6 +395,11 @@ export default function PrimarySearchAppBar() {
       </IconButton>
     </Box>
   );
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      navigate("/searchingVideosPage");
+    }
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -551,6 +441,7 @@ export default function PrimarySearchAppBar() {
             <StyledInputBase
               placeholder="Search YouTube"
               inputProps={{ "aria-label": "search" }}
+              onKeyPress={handleSearch}
             />
           </Search>
           <IconButton
