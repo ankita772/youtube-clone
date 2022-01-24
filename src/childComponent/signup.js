@@ -10,7 +10,9 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  OutlinedInput,
+  FilledInput,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -29,18 +31,48 @@ const style = {
 
 export default function TransitionsModal() {
   const auth = getAuth();
+  let validColorField1 = "";
+  let validColorField2 = "";
+  const [emailValidColor, setEmailValidColor] = React.useState("");
+  const [passwordValidColor, setPasswordValidColor] = React.useState("");
   const [signupModalOpen, setSignupModalOpen] = React.useState(false);
   const [signupValues, setSignupValues] = React.useState({
-    name: "",
     email: "",
     password: "",
     showPassword: false,
   });
+  const [snackbar, setSnackbar] = React.useState({
+    open: false,
+    severity: "",
+    message: "",
+    vertical: "top",
+    horizontal: "right",
+  });
+  const { vertical, horizontal, open, severity, message } = snackbar;
+
+  const handleClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   const handleChangePassword = (prop) => (event) => {
+    if (event.target.value === "") {
+      validColorField2 = "error";
+      setPasswordValidColor(validColorField2);
+    } else {
+      validColorField2 = "success";
+      setPasswordValidColor(validColorField2);
+    }
     setSignupValues({ ...signupValues, [prop]: event.target.value });
   };
+
   const handleChangeEmail = (prop) => (event) => {
+    if (event.target.value === "") {
+      validColorField1 = "error";
+      setEmailValidColor(validColorField1);
+    } else {
+      validColorField1 = "success";
+      setEmailValidColor(validColorField1);
+    }
     setSignupValues({ ...signupValues, [prop]: event.target.value });
   };
 
@@ -55,67 +87,99 @@ export default function TransitionsModal() {
     event.preventDefault();
   };
 
-  // createUserWithEmailAndPassword(auth, signupValues.email, signupValues.password)
-  //   .then((userCredential) => {
-  //     // Signed in
-  //     const user = userCredential.user;
-  //     // ...
-  //   })
-  //   .catch((error) => {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //     // ..
-  //   });
-
-  const nameForRegister = () => (
-    <>
-      <Box
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1, width: "32ch" },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField id="outlined-basic" label="Name" variant="outlined" />
-      </Box>
-    </>
-  );
-
   const emailForRegister = () => (
     <TextField
       label="Email Id"
       type="email"
+      color={emailValidColor}
       value={signupValues.email}
       onChange={handleChangeEmail("email")}
       sx={{ m: 1, width: "32ch" }}
+      variant="filled"
     />
   );
 
   const passwordForRegister = () => (
-    <FormControl sx={{ m: 1, width: "32ch" }} variant="outlined">
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-      <OutlinedInput
-        id="outlined-adornment-password"
-        type={signupValues.showPassword ? "text" : "password"}
-        value={signupValues.password}
-        onChange={handleChangePassword("password")}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={handleChangeShowPassword}
-              onMouseDown={handleChangeMouseDownPassword}
-              edge="end"
-            >
-              {signupValues.showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        }
-        label="Password"
-      />
-    </FormControl>
+    <>
+      <FormControl
+        sx={{ m: 1, width: "32ch" }}
+        variant="filled"
+        color={passwordValidColor}
+      >
+        <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
+        <FilledInput
+          id="filled-adornment-password"
+          type={signupValues.showPassword ? "text" : "password"}
+          value={signupValues.password}
+          onChange={handleChangePassword("password")}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleChangeShowPassword}
+                onMouseDown={handleChangeMouseDownPassword}
+                edge="end"
+              >
+                {signupValues.showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+    </>
   );
+
+  const handleSignup = () => {
+    if (signupValues.email === "" && signupValues.password === "") {
+      validColorField1 = "error";
+      validColorField2 = "error";
+      setEmailValidColor(validColorField1);
+      setPasswordValidColor(validColorField2);
+      console.log("hjk");
+    } else if (signupValues.email === "") {
+      validColorField1 = "error";
+
+      setEmailValidColor(validColorField1);
+    } else if (signupValues.password === "") {
+      validColorField2 = "error";
+
+      setPasswordValidColor(validColorField2);
+    } else {
+      setSignupValues({
+        ...signupValues,
+        email: "",
+        password: "",
+        showPassword: false,
+      });
+      setEmailValidColor("");
+      setPasswordValidColor("");
+
+      createUserWithEmailAndPassword(
+        auth,
+        signupValues.email,
+        signupValues.password
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          // setSnackbar({
+          //   ...snackbar,
+          //   open: true,
+          //   severity: "sucess",
+          //   message: "This is an sucess message",
+          // });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setSnackbar({
+            ...snackbar,
+            open: true,
+            severity: "error",
+            message: "This is an error message",
+          });
+        });
+    }
+  };
 
   return (
     <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}>
@@ -128,13 +192,23 @@ export default function TransitionsModal() {
       >
         Sign Up
       </Button>
+      <Snackbar
+        autoHideDuration={2000}
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleClose}
+        key={vertical + horizontal}
+      >
+        <Alert severity={severity} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
       <Modal open={signupModalOpen} onClose={() => setSignupModalOpen(false)}>
         <Box sx={style}>
           <Typography variant="h5" component="h2" sx={{ textAlign: "center" }}>
             Sign Up
           </Typography>
           <Box sx={{ ml: 2, mt: 1 }}>
-            {nameForRegister()}
             {emailForRegister()}
             {passwordForRegister()}
           </Box>
@@ -143,6 +217,7 @@ export default function TransitionsModal() {
               variant="contained"
               color="success"
               sx={{ textAlign: "center" }}
+              onClick={handleSignup}
             >
               Sign Up
             </Button>

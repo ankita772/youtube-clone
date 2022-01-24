@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router";
 import { styled } from "@mui/material/styles";
 import Header from "../component/header";
 import {
@@ -18,6 +19,7 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 const SearchingVideosPage = () => {
+  const navigate = useNavigate();
   const searchRelatedVideo = () => (
     <>
       <Grid
@@ -34,6 +36,9 @@ const SearchingVideosPage = () => {
             src="https://i.ytimg.com/vi/7gMLNiEz3nw/hqdefault.jpg?s…QCAokN4AQ==&rs=AOn4CLBLA5uG8DDgm8gYYCGSL8k5Uapr2A"
             width="100%"
             height="80%"
+            onClick={() => {
+              navigate("/videopage");
+            }}
           />
         </Grid>
         <Grid xs={7} sm={7} md={7} sx={{ m: 2 }}>

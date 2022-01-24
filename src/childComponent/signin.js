@@ -9,7 +9,9 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  OutlinedInput,
+  FilledInput,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -27,17 +29,48 @@ const style = {
 };
 
 export default function SigninTransitionsModal() {
+  let validColorField1 = "";
+  let validColorField2 = "";
+  const [emailValidColor, setEmailValidColor] = React.useState("");
+  const [passwordValidColor, setPasswordValidColor] = React.useState("");
   const [signinModalOpen, setSigninModalOpen] = React.useState(false);
   const [signinValues, setSigninValues] = React.useState({
     email: "",
     password: "",
     showPassword: false,
   });
+  const [snackbar, setSnackbar] = React.useState({
+    open: false,
+    severity: "",
+    message: "",
+    vertical: "top",
+    horizontal: "right",
+  });
+  const { vertical, horizontal, open, severity, message } = snackbar;
 
-  const handlePassword = (prop) => (event) => {
+  const handleClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleEmail = (prop) => (event) => {
+    if (event.target.value === "") {
+      validColorField1 = "error";
+      setEmailValidColor(validColorField1);
+    } else {
+      validColorField1 = "success";
+      setEmailValidColor(validColorField1);
+    }
     setSigninValues({ ...signinValues, [prop]: event.target.value });
   };
-  const handleEmail = (prop) => (event) => {
+
+  const handlePassword = (prop) => (event) => {
+    if (event.target.value === "") {
+      validColorField2 = "error";
+      setPasswordValidColor(validColorField2);
+    } else {
+      validColorField2 = "success";
+      setPasswordValidColor(validColorField2);
+    }
     setSigninValues({ ...signinValues, [prop]: event.target.value });
   };
 
@@ -52,40 +85,72 @@ export default function SigninTransitionsModal() {
     event.preventDefault();
   };
 
-  const passwordField = () => (
-    <FormControl sx={{ m: 1, width: "32ch" }} variant="outlined">
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-      <OutlinedInput
-        id="outlined-adornment-password"
-        type={signinValues.showPassword ? "text" : "password"}
-        value={signinValues.password}
-        onChange={handlePassword("password")}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
-              edge="end"
-            >
-              {signinValues.showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        }
-        label="Password"
-      />
-    </FormControl>
-  );
-
   const emailField = () => (
     <TextField
       label="Email Id"
       type="email"
       value={signinValues.email}
       onChange={handleEmail("email")}
+      color={emailValidColor}
       sx={{ m: 1, width: "32ch" }}
+      variant="filled"
     />
   );
+
+  const passwordField = () => (
+    <>
+      <FormControl
+        sx={{ m: 1, width: "32ch" }}
+        variant="filled"
+        color={passwordValidColor}
+      >
+        <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
+        <FilledInput
+          id="filled-adornment-password"
+          type={signinValues.showPassword ? "text" : "password"}
+          value={signinValues.password}
+          onChange={handlePassword("password")}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {signinValues.showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+    </>
+  );
+
+  const handleSignin = () => {
+    if (signinValues.email === "" && signinValues.password === "") {
+      validColorField1 = "error";
+      validColorField2 = "error";
+      setEmailValidColor(validColorField1);
+      setPasswordValidColor(validColorField2);
+    } else if (signinValues.email === "") {
+      validColorField1 = "error";
+      setEmailValidColor(validColorField1);
+    } else if (signinValues.password === "") {
+      validColorField2 = "error";
+      setPasswordValidColor(validColorField2);
+    } else {
+      setSigninValues({
+        ...signinValues,
+        email: "",
+        password: "",
+        showPassword: false,
+      });
+      setEmailValidColor("");
+      setPasswordValidColor("");
+    }
+  };
+
   return (
     <>
       <Button
@@ -97,7 +162,17 @@ export default function SigninTransitionsModal() {
       >
         Sign IN
       </Button>
-
+      <Snackbar
+        autoHideDuration={2000}
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleClose}
+        key={vertical + horizontal}
+      >
+        <Alert severity={severity} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
       <Modal open={signinModalOpen} onClose={() => setSigninModalOpen(false)}>
         <Box sx={style}>
           <Typography variant="h5" component="h2" sx={{ textAlign: "center" }}>
@@ -111,6 +186,7 @@ export default function SigninTransitionsModal() {
             <Button
               variant="contained"
               color="success"
+              onClick={handleSignin}
               sx={{ textAlign: "center" }}
             >
               Sign in
