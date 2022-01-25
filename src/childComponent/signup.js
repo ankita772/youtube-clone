@@ -1,4 +1,5 @@
 import * as React from "react";
+import Notification from "../component/notification";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
   Box,
@@ -11,8 +12,6 @@ import {
   InputAdornment,
   InputLabel,
   FilledInput,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -45,14 +44,7 @@ export default function TransitionsModal() {
     open: false,
     severity: "",
     message: "",
-    vertical: "top",
-    horizontal: "right",
   });
-  const { vertical, horizontal, open, severity, message } = snackbar;
-
-  const handleClose = () => {
-    setSnackbar({ ...snackbar, open: false });
-  };
 
   const handleChangePassword = (prop) => (event) => {
     if (event.target.value === "") {
@@ -161,12 +153,13 @@ export default function TransitionsModal() {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          // setSnackbar({
-          //   ...snackbar,
-          //   open: true,
-          //   severity: "sucess",
-          //   message: "This is an sucess message",
-          // });
+          setSnackbar({
+            ...snackbar,
+            open: true,
+            severity: "success",
+            message: "Sign up successfully Completed",
+          });
+          setSignupModalOpen(false);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -175,7 +168,7 @@ export default function TransitionsModal() {
             ...snackbar,
             open: true,
             severity: "error",
-            message: "This is an error message",
+            message: errorMessage,
           });
         });
     }
@@ -192,17 +185,16 @@ export default function TransitionsModal() {
       >
         Sign Up
       </Button>
-      <Snackbar
-        autoHideDuration={2000}
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        onClose={handleClose}
-        key={vertical + horizontal}
-      >
-        <Alert severity={severity} sx={{ width: "100%" }}>
-          {message}
-        </Alert>
-      </Snackbar>
+      <Notification
+        open={snackbar.open}
+        vertical="top"
+        horizontal="right"
+        severity={snackbar.severity}
+        message={snackbar.message}
+        onClose={() => {
+          setSnackbar({ ...snackbar, open: false });
+        }}
+      />
       <Modal open={signupModalOpen} onClose={() => setSignupModalOpen(false)}>
         <Box sx={style}>
           <Typography variant="h5" component="h2" sx={{ textAlign: "center" }}>
