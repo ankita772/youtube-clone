@@ -30,8 +30,6 @@ const style = {
 
 export default function TransitionsModal() {
   const auth = getAuth();
-  let validColorField1 = "";
-  let validColorField2 = "";
   const [emailValidColor, setEmailValidColor] = React.useState("");
   const [passwordValidColor, setPasswordValidColor] = React.useState("");
   const [signupModalOpen, setSignupModalOpen] = React.useState(false);
@@ -48,22 +46,18 @@ export default function TransitionsModal() {
 
   const handleChangePassword = (prop) => (event) => {
     if (event.target.value === "") {
-      validColorField2 = "error";
-      setPasswordValidColor(validColorField2);
+      setPasswordValidColor("error");
     } else {
-      validColorField2 = "success";
-      setPasswordValidColor(validColorField2);
+      setPasswordValidColor("success");
     }
     setSignupValues({ ...signupValues, [prop]: event.target.value });
   };
 
   const handleChangeEmail = (prop) => (event) => {
     if (event.target.value === "") {
-      validColorField1 = "error";
-      setEmailValidColor(validColorField1);
+      setEmailValidColor("error");
     } else {
-      validColorField1 = "success";
-      setEmailValidColor(validColorField1);
+      setEmailValidColor("success");
     }
     setSignupValues({ ...signupValues, [prop]: event.target.value });
   };
@@ -123,19 +117,12 @@ export default function TransitionsModal() {
 
   const handleSignup = () => {
     if (signupValues.email === "" && signupValues.password === "") {
-      validColorField1 = "error";
-      validColorField2 = "error";
-      setEmailValidColor(validColorField1);
-      setPasswordValidColor(validColorField2);
-      console.log("hjk");
+      setEmailValidColor("error");
+      setPasswordValidColor("error");
     } else if (signupValues.email === "") {
-      validColorField1 = "error";
-
-      setEmailValidColor(validColorField1);
+      setEmailValidColor("error");
     } else if (signupValues.password === "") {
-      validColorField2 = "error";
-
-      setPasswordValidColor(validColorField2);
+      setPasswordValidColor("error");
     } else {
       setSignupValues({
         ...signupValues,
@@ -153,6 +140,8 @@ export default function TransitionsModal() {
       )
         .then((userCredential) => {
           const user = userCredential.user;
+          localStorage.setItem("User", JSON.stringify(user));
+
           setSnackbar({
             ...snackbar,
             open: true,
@@ -175,47 +164,58 @@ export default function TransitionsModal() {
   };
 
   return (
-    <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}>
-      <Button
-        variant="outlined"
-        color="error"
-        onClick={() => {
-          setSignupModalOpen(true);
-        }}
-      >
-        Sign Up
-      </Button>
-      <Notification
-        open={snackbar.open}
-        vertical="top"
-        horizontal="right"
-        severity={snackbar.severity}
-        message={snackbar.message}
-        onClose={() => {
-          setSnackbar({ ...snackbar, open: false });
-        }}
-      />
-      <Modal open={signupModalOpen} onClose={() => setSignupModalOpen(false)}>
-        <Box sx={style}>
-          <Typography variant="h5" component="h2" sx={{ textAlign: "center" }}>
-            Sign Up
-          </Typography>
-          <Box sx={{ ml: 2, mt: 1 }}>
-            {emailForRegister()}
-            {passwordForRegister()}
-          </Box>
-          <Box sx={{ textAlign: "center", mt: 1 }}>
-            <Button
-              variant="contained"
-              color="success"
+    <>
+      <Box sx={{ mr: 2 }}>
+        <Button
+          variant="outlined"
+          sx={{
+            color: "info",
+            fontWeight: "bold",
+            fontSize: { xs: "8px", sm: "8px", md: "10px", lg: "15px" },
+            p: 1,
+          }}
+          onClick={() => {
+            setSignupModalOpen(true);
+          }}
+        >
+          Sign Up
+        </Button>
+        <Notification
+          open={snackbar.open}
+          vertical="top"
+          horizontal="right"
+          severity={snackbar.severity}
+          message={snackbar.message}
+          onClose={() => {
+            setSnackbar({ ...snackbar, open: false });
+          }}
+        />
+        <Modal open={signupModalOpen} onClose={() => setSignupModalOpen(false)}>
+          <Box sx={style}>
+            <Typography
+              variant="h5"
+              component="h2"
               sx={{ textAlign: "center" }}
-              onClick={handleSignup}
             >
               Sign Up
-            </Button>
+            </Typography>
+            <Box sx={{ ml: 2, mt: 1 }}>
+              {emailForRegister()}
+              {passwordForRegister()}
+            </Box>
+            <Box sx={{ textAlign: "center", mt: 1 }}>
+              <Button
+                variant="contained"
+                color="success"
+                sx={{ textAlign: "center" }}
+                onClick={handleSignup}
+              >
+                Sign Up
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Modal>
-    </Box>
+        </Modal>
+      </Box>
+    </>
   );
 }

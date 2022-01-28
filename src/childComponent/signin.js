@@ -1,4 +1,6 @@
 import * as React from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import Notification from "../component/notification";
 import {
   Box,
   Modal,
@@ -10,8 +12,6 @@ import {
   InputAdornment,
   InputLabel,
   FilledInput,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -28,9 +28,8 @@ const style = {
   p: 4,
 };
 
-export default function SigninTransitionsModal() {
-  let validColorField1 = "";
-  let validColorField2 = "";
+export default function SigninTransitionsModal({ completeSignin }) {
+  const auth = getAuth();
   const [emailValidColor, setEmailValidColor] = React.useState("");
   const [passwordValidColor, setPasswordValidColor] = React.useState("");
   const [signinModalOpen, setSigninModalOpen] = React.useState(false);
@@ -43,33 +42,22 @@ export default function SigninTransitionsModal() {
     open: false,
     severity: "",
     message: "",
-    vertical: "top",
-    horizontal: "right",
   });
-  const { vertical, horizontal, open, severity, message } = snackbar;
-
-  const handleClose = () => {
-    setSnackbar({ ...snackbar, open: false });
-  };
 
   const handleEmail = (prop) => (event) => {
     if (event.target.value === "") {
-      validColorField1 = "error";
-      setEmailValidColor(validColorField1);
+      setEmailValidColor("error");
     } else {
-      validColorField1 = "success";
-      setEmailValidColor(validColorField1);
+      setEmailValidColor("success");
     }
     setSigninValues({ ...signinValues, [prop]: event.target.value });
   };
 
   const handlePassword = (prop) => (event) => {
     if (event.target.value === "") {
-      validColorField2 = "error";
-      setPasswordValidColor(validColorField2);
+      setPasswordValidColor("error");
     } else {
-      validColorField2 = "success";
-      setPasswordValidColor(validColorField2);
+      setPasswordValidColor("success");
     }
     setSigninValues({ ...signinValues, [prop]: event.target.value });
   };
@@ -129,16 +117,12 @@ export default function SigninTransitionsModal() {
 
   const handleSignin = () => {
     if (signinValues.email === "" && signinValues.password === "") {
-      validColorField1 = "error";
-      validColorField2 = "error";
-      setEmailValidColor(validColorField1);
-      setPasswordValidColor(validColorField2);
+      setEmailValidColor("error");
+      setPasswordValidColor("error");
     } else if (signinValues.email === "") {
-      validColorField1 = "error";
-      setEmailValidColor(validColorField1);
+      setEmailValidColor("error");
     } else if (signinValues.password === "") {
-      validColorField2 = "error";
-      setPasswordValidColor(validColorField2);
+      setPasswordValidColor("error");
     } else {
       setSigninValues({
         ...signinValues,
@@ -148,52 +132,91 @@ export default function SigninTransitionsModal() {
       });
       setEmailValidColor("");
       setPasswordValidColor("");
+
+      signInWithEmailAndPassword(
+        auth,
+        signinValues.email,
+        signinValues.password
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          localStorage.setItem("User", JSON.stringify(user));
+          setSigninModalOpen(false);
+          completeSignin(true);
+
+          setSnackbar({
+            ...snackbar,
+            open: true,
+            severity: "success",
+            message: "Sign in completed successfully",
+          });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setSnackbar({
+            ...snackbar,
+            open: true,
+            severity: "error",
+            message: errorMessage,
+          });
+        });
     }
   };
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="error"
-        onClick={() => {
-          setSigninModalOpen(true);
-        }}
-      >
-        Sign IN
-      </Button>
-      <Snackbar
-        autoHideDuration={2000}
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        onClose={handleClose}
-        key={vertical + horizontal}
-      >
-        <Alert severity={severity} sx={{ width: "100%" }}>
-          {message}
-        </Alert>
-      </Snackbar>
-      <Modal open={signinModalOpen} onClose={() => setSigninModalOpen(false)}>
-        <Box sx={style}>
-          <Typography variant="h5" component="h2" sx={{ textAlign: "center" }}>
-            Sign In
-          </Typography>
-          <Box sx={{ ml: 2, mt: 1 }}>
-            {emailField()}
-            {passwordField()}
-          </Box>
-          <Box sx={{ textAlign: "center", mt: 1 }}>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={handleSignin}
+      <Box sx={{ display: { md: "flex" }, mr: 2 }}>
+        <Button
+          variant="outlined"
+          sx={{
+            color: "info",
+            fontWeight: "bold",
+            fontSize: { xs: "8px", sm: "8px", md: "10px", lg: "15px" },
+            p: 1,
+          }}
+          onClick={() => {
+            setSigninModalOpen(true);
+          }}
+        >
+          Sign IN
+        </Button>
+        <Notification
+          open={snackbar.open}
+          vertical="top"
+          horizontal="right"
+          severity={snackbar.severity}
+          message={snackbar.message}
+          onClose={() => {
+            setSnackbar({ ...snackbar, open: false });
+          }}
+        />
+        <Modal open={signinModalOpen} onClose={() => setSigninModalOpen(false)}>
+          <Box sx={style}>
+            <Typography
+              variant="h5"
+              component="h2"
               sx={{ textAlign: "center" }}
             >
-              Sign in
-            </Button>
+              Sign In
+            </Typography>
+            <Box sx={{ ml: 2, mt: 1 }}>
+              {emailField()}
+              {passwordField()}
+            </Box>
+            <Box sx={{ textAlign: "center", mt: 1 }}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleSignin}
+                sx={{ textAlign: "center" }}
+              >
+                Sign in
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Modal>
+        </Modal>
+      </Box>
     </>
   );
 }

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import bird from "../assets/bird.jpeg";
+import Leftbar from "../childComponent/leftbar";
+import Accountbar from "../childComponent/accountbar";
 import Signup from "../childComponent/signup";
 import Signin from "../childComponent/signin";
 import { styled, alpha } from "@mui/material/styles";
@@ -13,14 +15,8 @@ import {
   InputBase,
   MenuItem,
   Menu,
-  Link,
-  CssBaseline,
   Drawer,
-  List,
-  Divider,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
+  Avatar,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -31,25 +27,6 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import MicIcon from "@mui/icons-material/Mic";
-import HomeIcon from "@mui/icons-material/Home";
-import ExploreIcon from "@mui/icons-material/Explore";
-import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
-import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
-import HistoryIcon from "@mui/icons-material/History";
-import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
-import WatchLaterIcon from "@mui/icons-material/WatchLater";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import CloseIcon from "@mui/icons-material/Close";
-import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import LogoutIcon from "@mui/icons-material/Logout";
-import SettingsIcon from "@mui/icons-material/Settings";
-import TranslateIcon from "@mui/icons-material/Translate";
-import LanguageIcon from "@mui/icons-material/Language";
-import KeyboardOutlinedIcon from "@mui/icons-material/KeyboardOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -96,12 +73,9 @@ export default function PrimarySearchAppBar() {
   const [isSignin, setIsSignin] = React.useState(false);
   const [accountbarOpen, setAccountbarOpen] = React.useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [leftbar, setLeftBar] = React.useState(false);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleAccount = () => {
-    setAccountbarOpen(true);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -111,7 +85,11 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const [leftbar, setLeftBar] = React.useState(false);
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      navigate("/searchingVideosPage");
+    }
+  };
 
   const toggleDrawer = (isOpen) => (event) => {
     if (
@@ -124,190 +102,6 @@ export default function PrimarySearchAppBar() {
     setLeftBar(isOpen);
   };
 
-  const list = () => (
-    <Box
-      sx={{ width: 220 }}
-      role="presentation"
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        <ListItem button key="Menubar">
-          <ListItemIcon>
-            <IconButton onClick={toggleDrawer(false)}>
-              <MenuIcon />
-            </IconButton>
-          </ListItemIcon>
-          <ListItemIcon>
-            <YouTubeIcon className="youtubeIcon" />
-          </ListItemIcon>
-          <ListItemText primary="YouTube" />
-        </ListItem>
-        <ListItem button key="Home">
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button key="Explore">
-          <ListItemIcon>
-            <ExploreIcon />
-          </ListItemIcon>
-          <ListItemText primary="Explore" />
-        </ListItem>
-        <ListItem button key="Subscriptions">
-          <ListItemIcon>
-            <SubscriptionsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Subscriptions" />
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem button key="Library">
-          <ListItemIcon>
-            <VideoLibraryIcon />
-          </ListItemIcon>
-          <ListItemText primary="Library" />
-        </ListItem>
-        <ListItem button key="History">
-          <ListItemIcon>
-            <HistoryIcon />
-          </ListItemIcon>
-          <ListItemText primary="History" />
-        </ListItem>
-        <ListItem button key="Video">
-          <ListItemIcon>
-            <OndemandVideoIcon />
-          </ListItemIcon>
-          <ListItemText primary="Your video" />
-        </ListItem>
-        <ListItem button key="WatchLater">
-          <ListItemIcon>
-            <WatchLaterIcon />
-          </ListItemIcon>
-
-          <ListItemText primary="Watch later" />
-        </ListItem>
-
-        <ListItem button key="LikeVideos">
-          <ListItemIcon>
-            <ThumbUpAltIcon />
-          </ListItemIcon>
-          <ListItemText primary="Like videos" />
-        </ListItem>
-        <ListItem button key="ShowMore">
-          <ListItemIcon>
-            <KeyboardArrowDownIcon />
-          </ListItemIcon>
-          <ListItemText primary="Show more" />`
-        </ListItem>
-      </List>
-    </Box>
-  );
-
-  const AccountList = () => (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <Drawer
-        sx={{
-          width: 280,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: 280,
-            boxSizing: "border-box",
-          },
-        }}
-        variant="permanent"
-        anchor="center"
-      >
-        <Toolbar>
-          <IconButton>
-            <img
-              src={bird}
-              alt="greenBird"
-              width="40"
-              height="40"
-              sx={{ p: 0 }}
-            />
-          </IconButton>
-          <Typography component="div">
-            <Box sx={{ lineHeight: 1, fontSize: 12 }}>Ankita Santra</Box>
-            <Box sx={{ lineHeight: 1, fontSize: 10, mt: 0.6, ml: 0.3 }}>
-              <Link href="#" underline="none">
-                Manage your google account
-              </Link>
-            </Box>
-          </Typography>
-          <IconButton sx={{ ml: 0.2 }} onClick={() => setAccountbarOpen(false)}>
-            <CloseIcon />
-          </IconButton>
-        </Toolbar>
-
-        <Divider />
-        <List>
-          <ListItem button key="YourChannel">
-            <ListItemIcon>
-              <AccountBoxOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Your channel" />
-          </ListItem>
-
-          <ListItem button key="Membership">
-            <ListItemIcon>
-              <MonetizationOnIcon />
-            </ListItemIcon>
-            <ListItemText primary="Membership" />
-          </ListItem>
-
-          <ListItem button key="SignOut">
-            <ListItemIcon>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary="Sign Out" />
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem button key="Settings">
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </ListItem>
-
-          <ListItem button key="Language">
-            <ListItemIcon>
-              <TranslateIcon />
-            </ListItemIcon>
-            <ListItemText primary="Language" />
-            <ArrowForwardIosIcon sx={{ fontSize: 15 }} />
-          </ListItem>
-
-          <ListItem button key="Location">
-            <ListItemIcon>
-              <LanguageIcon />
-            </ListItemIcon>
-            <ListItemText primary="Location" />
-            <ArrowForwardIosIcon sx={{ fontSize: 15 }} />
-          </ListItem>
-
-          <ListItem button key="Keyboard">
-            <ListItemIcon>
-              <KeyboardOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Keyboard" />
-          </ListItem>
-
-          <ListItem button key="Help">
-            <ListItemIcon>
-              <HelpOutlineOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Help" />
-          </ListItem>
-        </List>
-      </Drawer>
-    </Box>
-  );
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
@@ -341,80 +135,85 @@ export default function PrimarySearchAppBar() {
         </IconButton>
       </MenuItem>
       <MenuItem>
-        <IconButton sx={{ ml: 1 }}>
-          <img
-            src={bird}
-            alt="green bird"
-            width="30"
-            height="30"
-            onClick={handleAccount}
-          />
-          {accountbarOpen === true ? AccountList() : ""}
+        <IconButton
+          sx={{ ml: 1 }}
+          onClick={() => {
+            setAccountbarOpen(true);
+          }}
+        >
+          <Avatar alt="Cindy Baker" src={bird} />
+          {accountbarOpen === true ? (
+            <Accountbar setAccountbarOpen={setAccountbarOpen} />
+          ) : (
+            ""
+          )}
         </IconButton>
       </MenuItem>
     </Menu>
   );
 
   const preSignin = () => (
-    <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}>
-      <IconButton size="large" color="inherit" aria-label="moreIcon">
-        <MoreIcon />
-      </IconButton>
-
+    <Box sx={{ display: "flex", mr: 2 }}>
       <Signup />
-      <Signin />
+      <Signin completeSignin={setIsSignin} />
     </Box>
   );
 
   const afterSignin = () => (
-    <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-evenly",
+      }}
+    >
       <IconButton size="large" color="inherit" aria-label="videoCall">
-        <VideoCallIcon />
+        <VideoCallIcon sx={{ color: "black" }} />
       </IconButton>
+
       <IconButton size="large" color="inherit" aria-label="gridView">
-        <GridViewIcon />
+        <GridViewIcon sx={{ color: "black" }} />
       </IconButton>
       <IconButton
         size="large"
         edge="end"
-        aria-label="notification"
-        aria-haspopup="true"
         color="inherit"
+        aria-label="notification"
       >
-        <NotificationsNoneIcon />
+        <NotificationsNoneIcon sx={{ color: "black" }} />
       </IconButton>
-      <IconButton sx={{ ml: 1 }}>
-        <img
-          src={bird}
-          alt="greenBird"
-          width="30"
-          height="30"
-          onClick={handleAccount}
-        />
-        {accountbarOpen === true ? AccountList() : ""}
+      <IconButton
+        sx={{ ml: 1 }}
+        onClick={() => {
+          setAccountbarOpen(true);
+        }}
+      >
+        <Avatar alt="candy bekar" src={bird} />
+        {accountbarOpen === true ? (
+          <Accountbar setAccountbarOpen={setAccountbarOpen} />
+        ) : (
+          ""
+        )}
       </IconButton>
     </Box>
   );
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      navigate("/searchingVideosPage");
-    }
-  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar sx={{ backgroundColor: "white" }}>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, color: "black" }}
           >
             <MenuIcon onClick={toggleDrawer(true)} />
             <Drawer anchor="left" open={leftbar} onClose={toggleDrawer(false)}>
-              {list()}
+              <Leftbar
+                onKeyDown={toggleDrawer(false)}
+                onClick={toggleDrawer(false)}
+              />
             </Drawer>
           </IconButton>
           <IconButton
@@ -422,26 +221,35 @@ export default function PrimarySearchAppBar() {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2 }}
           >
-            <YouTubeIcon sx={{ color: "red" }} />
+            <YouTubeIcon
+              sx={{
+                fontSize: { xs: "20px", sm: "30px", md: "40px" },
+                color: "red",
+              }}
+            />
           </IconButton>
           <Typography
             variant="h6"
-            noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{
+              display: { xs: "none", sm: "block" },
+              fontWeight: "bold",
+              color: "black",
+              mr: 2,
+            }}
           >
             YouTube
           </Typography>
-          <Search>
+          <Search sx={{ display: { xs: "none", sm: "none", md: "flex" } }}>
             <SearchIconWrapper>
-              <SearchIcon />
+              <SearchIcon sx={{ color: "black" }} />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search YouTube"
               inputProps={{ "aria-label": "search" }}
               onKeyPress={handleSearch}
+              sx={{ color: "black", boxShadow: "0.2px 0.2px 5px grey inset" }}
             />
           </Search>
           <IconButton
@@ -449,12 +257,13 @@ export default function PrimarySearchAppBar() {
             edge="start"
             color="inherit"
             aria-label="mic"
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, display: { xs: "none", sm: "none", md: "flex" } }}
           >
-            <MicIcon />
+            <MicIcon sx={{ color: "black" }} />
           </IconButton>
 
           <Box sx={{ flexGrow: 1 }} />
+
           {isSignin === true ? afterSignin() : preSignin()}
           {isSignin === false ? (
             ""
