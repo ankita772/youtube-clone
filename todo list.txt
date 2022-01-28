@@ -1,0 +1,11 @@
+1. complete login using firebase
+2. store user details in localstorage
+3. show user profile on header instead of sign in/up button if user is logged in
+4. add logout button
+6. add functionality to like share dislike save
+7. add functionality to comment section( can comment and see comments
+8. add functionality to subscribe button
+9. add a page for channel
+10. add videos using firebase
+11. add no of views and time uploaded in videos
+12. add search functionality (text and voice both)
