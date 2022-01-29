@@ -2,7 +2,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import bird from "../assets/bird.jpeg";
 import Leftbar from "../childComponent/leftbar";
-import Accountbar from "../childComponent/accountbar";
+import AccountList from "../childComponent/accountList";
 import Signup from "../childComponent/signup";
 import Signin from "../childComponent/signin";
 import { styled, alpha } from "@mui/material/styles";
@@ -71,10 +71,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const navigate = useNavigate();
   const [isSignin, setIsSignin] = React.useState(false);
-  const [accountbarOpen, setAccountbarOpen] = React.useState(false);
+  const [openAccountList, setOpenAccountList] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [leftbar, setLeftBar] = React.useState(false);
 
+  const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleMobileMenuClose = () => {
@@ -83,6 +85,17 @@ export default function PrimarySearchAppBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpenAccountList(true);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    setOpenAccountList(false);
   };
 
   const handleSearch = (e) => {
@@ -101,7 +114,7 @@ export default function PrimarySearchAppBar() {
 
     setLeftBar(isOpen);
   };
-
+  const menuId = "primary-search-account-menu";
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
@@ -135,18 +148,8 @@ export default function PrimarySearchAppBar() {
         </IconButton>
       </MenuItem>
       <MenuItem>
-        <IconButton
-          sx={{ ml: 1 }}
-          onClick={() => {
-            setAccountbarOpen(true);
-          }}
-        >
+        <IconButton sx={{ ml: 1 }} onClick={handleProfileMenuOpen}>
           <Avatar alt="Cindy Baker" src={bird} />
-          {accountbarOpen === true ? (
-            <Accountbar setAccountbarOpen={setAccountbarOpen} />
-          ) : (
-            ""
-          )}
         </IconButton>
       </MenuItem>
     </Menu>
@@ -162,7 +165,7 @@ export default function PrimarySearchAppBar() {
   const afterSignin = () => (
     <Box
       sx={{
-        display: "flex",
+        display: { xs: "none", sm: "none", md: "flex" },
         justifyContent: "space-evenly",
       }}
     >
@@ -181,18 +184,8 @@ export default function PrimarySearchAppBar() {
       >
         <NotificationsNoneIcon sx={{ color: "black" }} />
       </IconButton>
-      <IconButton
-        sx={{ ml: 1 }}
-        onClick={() => {
-          setAccountbarOpen(true);
-        }}
-      >
+      <IconButton sx={{ ml: 1 }} onClick={handleProfileMenuOpen}>
         <Avatar alt="candy bekar" src={bird} />
-        {accountbarOpen === true ? (
-          <Accountbar setAccountbarOpen={setAccountbarOpen} />
-        ) : (
-          ""
-        )}
       </IconButton>
     </Box>
   );
@@ -275,7 +268,7 @@ export default function PrimarySearchAppBar() {
                 aria-controls={mobileMenuId}
                 aria-haspopup="true"
                 onClick={handleMobileMenuOpen}
-                color="inherit"
+                sx={{ color: "black" }}
               >
                 <MoreIcon />
               </IconButton>
@@ -284,6 +277,18 @@ export default function PrimarySearchAppBar() {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
+      {openAccountList === true ? (
+        <AccountList
+          anchorEl={anchorEl}
+          isMenuOpen={isMenuOpen}
+          menuId={menuId}
+          handleMenuClose={handleMenuClose}
+          setIsSignin={setIsSignin}
+          setOpenAccountList={setOpenAccountList}
+        />
+      ) : (
+        ""
+      )}
     </Box>
   );
 }

@@ -141,8 +141,6 @@ export default function SigninTransitionsModal({ completeSignin }) {
         .then((userCredential) => {
           const user = userCredential.user;
           localStorage.setItem("User", JSON.stringify(user));
-          setSigninModalOpen(false);
-          completeSignin(true);
 
           setSnackbar({
             ...snackbar,
@@ -150,6 +148,8 @@ export default function SigninTransitionsModal({ completeSignin }) {
             severity: "success",
             message: "Sign in completed successfully",
           });
+          setSigninModalOpen(false);
+          completeSignin(true);
         })
         .catch((error) => {
           const errorCode = error.code;
