@@ -29,6 +29,7 @@ const AccountList = ({
   handleMenuClose,
   setIsSignin,
   setOpenAccountList,
+  setOpenListAfterSignin,
 }) => {
   const auth = getAuth();
   const [snackbar, setSnackbar] = React.useState({
@@ -48,6 +49,8 @@ const AccountList = ({
         });
         setIsSignin(false);
         setOpenAccountList(false);
+        setOpenListAfterSignin(false);
+        localStorage.clear();
 
         // Sign-out successful.
       })

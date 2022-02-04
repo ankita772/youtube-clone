@@ -9,7 +9,6 @@ import {
   Typography,
   Box,
   Avatar,
-  Paper,
 } from "@mui/material";
 
 const Img = styled("img")({

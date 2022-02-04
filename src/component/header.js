@@ -71,6 +71,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const navigate = useNavigate();
   const [isSignin, setIsSignin] = React.useState(false);
+  const [openListAfterSignin, setOpenListAfterSignin] = React.useState(false);
   const [openAccountList, setOpenAccountList] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -81,10 +82,12 @@ export default function PrimarySearchAppBar() {
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
+    setOpenListAfterSignin(false);
   };
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+    setOpenListAfterSignin(true);
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -276,7 +279,7 @@ export default function PrimarySearchAppBar() {
           )}
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
+      {openListAfterSignin === true ? renderMobileMenu : ""}
       {openAccountList === true ? (
         <AccountList
           anchorEl={anchorEl}
@@ -285,6 +288,7 @@ export default function PrimarySearchAppBar() {
           handleMenuClose={handleMenuClose}
           setIsSignin={setIsSignin}
           setOpenAccountList={setOpenAccountList}
+          setOpenListAfterSignin={setOpenListAfterSignin}
         />
       ) : (
         ""
