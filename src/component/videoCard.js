@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
-import db from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
 
 import {
   Card,
   CardContent,
-  CardMediaConst,
+  CardMedia,
   Typography,
   CardActionArea,
   Avatar,
@@ -14,16 +13,15 @@ import {
 } from "@mui/material";
 
 export default function ActionAreaCard() {
-  useEffect(() => {
-    onSnapshot(collection(db, "Videos"), (snapshot) => {
-      console.log(snapshot);
-    });
+  const db = getDatabase();
+  useEffect((db) => {
+    console.log(db);
   }, []);
   const navigate = useNavigate();
   return (
     <Card sx={{ border: "none", boxShadow: "none" }}>
       <CardActionArea>
-        <CardMediaConst
+        <CardMedia
           component="img"
           height="120"
           image="https://i.ytimg.com/vi/7gMLNiEz3nw/hqdefault.jpg?s…QCAokN4AQ==&rs=AOn4CLBLA5uG8DDgm8gYYCGSL8k5Uapr2A"
