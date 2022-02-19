@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/videopage" exact element={<Videopage />} />
+          <Route path="/videopage/:id" element={<Videopage />} />
           <Route
             path="/searchingVideosPage"
             exact

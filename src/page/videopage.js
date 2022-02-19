@@ -22,8 +22,32 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ShareIcon from "@mui/icons-material/Share";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useParams } from "react-router-dom";
+const Videopage = () => {
+  const { id } = useParams();
+  const [uniqueUrl, setUniqueUrl] = React.useState("");
+  React.useEffect(() => {
+    fetchVideoDetails();
+  });
 
-const Videopage = (props) => {
+  const fetchVideoDetails = async () => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        _id: id,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    };
+    const res = await fetch(
+      "http://localhost:5000/get-video-details",
+      fetchData
+    );
+    const videoDetails = await res.json();
+    console.log("url is: ", videoDetails);
+  };
+
   const videoDetails = () => (
     <>
       <Grid container sx={{ display: "flex", mb: 2 }}>
@@ -144,10 +168,10 @@ const Videopage = (props) => {
         <Grid item xs={12} sm={12} md={7} lg={7} sx={{ ml: { xs: 0, md: 5 } }}>
           <ReactPlayer
             url="https://youtu.be/-w3H6WUN1mU"
+            // https://youtu.be/-w3H6WUN1mU
             height="26rem"
             width="100%"
             controls
-            playing
           />
           <Typography
             component="div"

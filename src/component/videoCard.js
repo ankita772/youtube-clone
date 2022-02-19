@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router";
-import { getDatabase } from "firebase/database";
+import VideoTitle from "../childComponent/videoTitle";
 
 import {
   Card,
@@ -12,21 +12,17 @@ import {
   Box,
 } from "@mui/material";
 
-export default function ActionAreaCard() {
-  const db = getDatabase();
-  useEffect((db) => {
-    console.log(db);
-  }, []);
+const VideoCard = ({ cardData }) => {
   const navigate = useNavigate();
+
   return (
     <Card sx={{ border: "none", boxShadow: "none" }}>
-      <CardActionArea>
+      <CardActionArea onClick={() => navigate(`/videopage/${cardData._id}`)}>
         <CardMedia
           component="img"
           height="120"
           image="https://i.ytimg.com/vi/7gMLNiEz3nw/hqdefault.jpg?s…QCAokN4AQ==&rs=AOn4CLBLA5uG8DDgm8gYYCGSL8k5Uapr2A"
           alt="green iguana"
-          onClick={() => navigate("/videopage")}
         />
         <CardContent sx={{ display: "flex" }}>
           <Avatar
@@ -35,21 +31,16 @@ export default function ActionAreaCard() {
             sx={{ height: 35, width: 35 }}
           />
           <div style={{ marginLeft: "3%" }}>
-            <Typography
-              component="div"
-              variant="body2"
-              sx={{ fontWeight: "bold" }}
-            >
-              Bankers algorithm
-            </Typography>
+            <VideoTitle title={cardData.title} />
             <Box sx={{ fontSize: "15" }}>Gate smashers</Box>
             <div style={{ display: "flex" }}>
-              <Box sx={{ fontSize: 13 }}>100k</Box>
-              <Box sx={{ fontSize: 13, ml: 1 }}>• 1 year ago</Box>
+              <Box sx={{ fontSize: 13 }}>{cardData.views}</Box>
+              <Box sx={{ fontSize: 13, ml: 1 }}>{cardData.created_at}</Box>
             </div>
           </div>
         </CardContent>
       </CardActionArea>
     </Card>
   );
-}
+};
+export default VideoCard;
