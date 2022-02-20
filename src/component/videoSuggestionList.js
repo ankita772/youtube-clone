@@ -1,43 +1,39 @@
 import * as React from "react";
-import { useNavigate } from "react-router";
-import { useTheme } from "@mui/material/styles";
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import ListedVideo from "./listedVideo";
+const VideoSuggestionList = ({ videoId }) => {
+  const [videosData, setVideosData] = React.useState([]);
+  React.useEffect(() => {
+    dataOfVideos();
+  }, []);
 
-const VideoSuggestionList = () => {
-  const navigate = useNavigate();
-  const theme = useTheme();
+  const dataOfVideos = async () => {
+    const res = await fetch("http://localhost:5000/get-videos");
+    const data = await res.json();
+    setVideosData(data);
+    console.log("data is :", data);
+  };
 
+  const filterVideos = (obj) => {
+    if (obj._id !== videoId) {
+      return obj;
+    }
+  };
+
+  const list = videosData.filter(filterVideos);
+  console.log("after filtering:", list);
   return (
-    <React.Fragment>
-      {/* <div style={{ display: "flex" }}> */}
-      <Card sx={{ display: "flex", border: "none", boxShadow: "none" }}>
-        <CardMedia
-          component="img"
-          sx={{ width: 151 }}
-          image="https://i.ytimg.com/vi/7gMLNiEz3nw/hqdefault.jpg?s…QCAokN4AQ==&rs=AOn4CLBLA5uG8DDgm8gYYCGSL8k5Uapr2A"
-          alt="Live from space album cover"
-          onClick={() => {
-            navigate("/videopage");
-          }}
-        />
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography
-              component="div"
-              variant="body2"
-              sx={{ fontWeight: "bold" }}
-            >
-              Bankers algorithm
-            </Typography>
-            <Box sx={{ fontSize: 13 }}>Gate smashers</Box>
-            <div style={{ display: "flex" }}>
-              <Box sx={{ fontSize: 13 }}>100k</Box>
-              <Box sx={{ fontSize: 13, ml: 1 }}>• 1 year ago</Box>
-            </div>
-          </CardContent>
-        </Box>
-      </Card>
-    </React.Fragment>
+    // const filterVideos = (obj) => {
+    //   if (obj._id !== videoId) {
+    //     list(obj);
+    //   }
+    // };
+    <>
+      {list.map((cardData) => (
+        <ListedVideo cardData={cardData} />
+      ))}
+
+      {/* {videosData.filter(filterVideos)} */}
+    </>
   );
 };
 export default VideoSuggestionList;

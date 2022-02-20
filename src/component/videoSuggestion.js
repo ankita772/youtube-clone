@@ -31,14 +31,6 @@ const VideoSuggestion = () => {
     console.log(data);
   };
 
-  // let fetchData = {
-  //   method: 'POST',
-  //   body: JSON.stringify(data),
-  //   headers: new Headers({
-  //     'Content-Type': 'application/json; charset=UTF-8'
-  //   })
-  // }
-
   return <React.Fragment>{cardRow(videosData)}</React.Fragment>;
 };
 export default VideoSuggestion;
