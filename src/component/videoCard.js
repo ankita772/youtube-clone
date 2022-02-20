@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import { useNavigate } from "react-router";
 import VideoTitle from "../childComponent/videoTitle";
 
@@ -32,10 +33,14 @@ const VideoCard = ({ cardData }) => {
           />
           <div style={{ marginLeft: "3%" }}>
             <VideoTitle title={cardData.title} />
-            <Box sx={{ fontSize: "15" }}>Gate smashers</Box>
+            <Box sx={{ fontSize: "15" }}>
+              {cardData.channel_id.channel_name}
+            </Box>
             <div style={{ display: "flex" }}>
-              <Box sx={{ fontSize: 13 }}>{cardData.views}</Box>
-              <Box sx={{ fontSize: 13, ml: 1 }}>{cardData.created_at}</Box>
+              <Box sx={{ fontSize: 13 }}>{cardData.views} views</Box>
+              <Box sx={{ fontSize: 13, ml: 1 }}>
+                {moment(cardData.created_at).format("DD-MMM-YYYY")}
+              </Box>
             </div>
           </div>
         </CardContent>

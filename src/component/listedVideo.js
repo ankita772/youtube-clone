@@ -9,7 +9,14 @@ const ListedVideo = ({ cardData }) => {
 
   return (
     <React.Fragment>
-      <Card sx={{ display: "flex", border: "none", boxShadow: "none" }}>
+      <Card
+        sx={{
+          display: "flex",
+          border: "none",
+          boxShadow: "none",
+          marginBottom: "5px",
+        }}
+      >
         <CardMedia
           component="img"
           sx={{ width: 151 }}
