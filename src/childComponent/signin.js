@@ -1,20 +1,8 @@
-import * as React from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import Email from "./email";
+import Password from "./password";
 import Notification from "../component/notification";
-import {
-  Box,
-  Modal,
-  TextField,
-  FormControl,
-  Button,
-  Typography,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  FilledInput,
-} from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Box, Modal, Button, Typography } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -28,12 +16,11 @@ const style = {
   p: 4,
 };
 
-export default function SigninTransitionsModal({ completeSignin }) {
-  const auth = getAuth();
-  const [emailValidColor, setEmailValidColor] = React.useState("");
-  const [passwordValidColor, setPasswordValidColor] = React.useState("");
-  const [signinModalOpen, setSigninModalOpen] = React.useState(false);
-  const [signinValues, setSigninValues] = React.useState({
+const Signin = () => {
+  const [emailValidColor, setEmailValidColor] = useState("");
+  const [passwordValidColor, setPasswordValidColor] = useState("");
+  const [signinModalOpen, setSigninModalOpen] = useState(false);
+  const [signinValues, setSigninValues] = useState({
     email: "",
     password: "",
     showPassword: false,
@@ -43,8 +30,8 @@ export default function SigninTransitionsModal({ completeSignin }) {
     severity: "",
     message: "",
   });
-
-  const handleEmail = (prop) => (event) => {
+  //onchange for email
+  const handleChangeEmail = (prop) => (event) => {
     if (event.target.value === "") {
       setEmailValidColor("error");
     } else {
@@ -52,8 +39,8 @@ export default function SigninTransitionsModal({ completeSignin }) {
     }
     setSigninValues({ ...signinValues, [prop]: event.target.value });
   };
-
-  const handlePassword = (prop) => (event) => {
+  //onchange for password
+  const handleChangePassword = (prop) => (event) => {
     if (event.target.value === "") {
       setPasswordValidColor("error");
     } else {
@@ -61,59 +48,19 @@ export default function SigninTransitionsModal({ completeSignin }) {
     }
     setSigninValues({ ...signinValues, [prop]: event.target.value });
   };
-
-  const handleClickShowPassword = () => {
+  //hide & show password
+  const handleChangeShowPassword = () => {
     setSigninValues({
       ...signinValues,
       showPassword: !signinValues.showPassword,
     });
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleChangeMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  const emailField = () => (
-    <TextField
-      label="Email Id"
-      type="email"
-      value={signinValues.email}
-      onChange={handleEmail("email")}
-      color={emailValidColor}
-      sx={{ m: 1, width: "32ch" }}
-      variant="filled"
-    />
-  );
-
-  const passwordField = () => (
-    <>
-      <FormControl
-        sx={{ m: 1, width: "32ch" }}
-        variant="filled"
-        color={passwordValidColor}
-      >
-        <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
-        <FilledInput
-          id="filled-adornment-password"
-          type={signinValues.showPassword ? "text" : "password"}
-          value={signinValues.password}
-          onChange={handlePassword("password")}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {signinValues.showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-    </>
-  );
+  //after clicking sign in
 
   const handleSignin = () => {
     if (signinValues.email === "" && signinValues.password === "") {
@@ -132,35 +79,6 @@ export default function SigninTransitionsModal({ completeSignin }) {
       });
       setEmailValidColor("");
       setPasswordValidColor("");
-
-      signInWithEmailAndPassword(
-        auth,
-        signinValues.email,
-        signinValues.password
-      )
-        .then((userCredential) => {
-          const user = userCredential.user;
-          localStorage.setItem("User", JSON.stringify(user));
-
-          setSnackbar({
-            ...snackbar,
-            open: true,
-            severity: "success",
-            message: "Sign in completed successfully",
-          });
-          setSigninModalOpen(false);
-          completeSignin(true);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setSnackbar({
-            ...snackbar,
-            open: true,
-            severity: "error",
-            message: errorMessage,
-          });
-        });
     }
   };
 
@@ -201,8 +119,18 @@ export default function SigninTransitionsModal({ completeSignin }) {
               Sign In
             </Typography>
             <Box sx={{ ml: 2, mt: 1 }}>
-              {emailField()}
-              {passwordField()}
+              <Email
+                emailValidColor={emailValidColor}
+                values={signinValues}
+                handleChangeEmail={handleChangeEmail("email")}
+              />
+              <Password
+                passwordValidColor={passwordValidColor}
+                values={signinValues}
+                handleChangePassword={handleChangePassword("password")}
+                handleChangeShowPassword={handleChangeShowPassword}
+                handleChangeMouseDownPassword={handleChangeMouseDownPassword}
+              />
             </Box>
             <Box sx={{ textAlign: "center", mt: 1 }}>
               <Button
@@ -219,4 +147,5 @@ export default function SigninTransitionsModal({ completeSignin }) {
       </Box>
     </>
   );
-}
+};
+export default Signin;

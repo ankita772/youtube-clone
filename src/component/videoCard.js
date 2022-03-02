@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router";
 import VideoTitle from "../childComponent/videoTitle";
@@ -7,7 +7,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Typography,
   CardActionArea,
   Avatar,
   Box,
@@ -15,6 +14,28 @@ import {
 
 const VideoCard = ({ cardData }) => {
   const navigate = useNavigate();
+  const [channelDetail, setChannelDetail] = useState([]);
+  useEffect(() => {
+    getUniqueChannel();
+  }, []);
+  const getUniqueChannel = async () => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        id: cardData.channel_id,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    };
+    const res = await fetch(
+      "http://localhost:5000/get-unique-channel",
+      fetchData
+    );
+    const data = await res.json();
+
+    setChannelDetail(data[0]);
+  };
 
   return (
     <Card sx={{ border: "none", boxShadow: "none" }}>
@@ -22,7 +43,7 @@ const VideoCard = ({ cardData }) => {
         <CardMedia
           component="img"
           height="120"
-          image="https://i.ytimg.com/vi/7gMLNiEz3nw/hqdefault.jpg?s…QCAokN4AQ==&rs=AOn4CLBLA5uG8DDgm8gYYCGSL8k5Uapr2A"
+          image={cardData.thumbnail_url}
           alt="green iguana"
         />
         <CardContent sx={{ display: "flex" }}>
@@ -33,9 +54,7 @@ const VideoCard = ({ cardData }) => {
           />
           <div style={{ marginLeft: "3%" }}>
             <VideoTitle title={cardData.title} />
-            <Box sx={{ fontSize: "15" }}>
-              {cardData.channel_id.channel_name}
-            </Box>
+            <Box sx={{ fontSize: "15" }}>{channelDetail.channel_name}</Box>
             <div style={{ display: "flex" }}>
               <Box sx={{ fontSize: 13 }}>{cardData.views} views</Box>
               <Box sx={{ fontSize: 13, ml: 1 }}>

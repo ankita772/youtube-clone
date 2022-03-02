@@ -1,20 +1,9 @@
-import * as React from "react";
+import React, { useState } from "react";
+import Email from "./email";
+import Password from "./password";
 import Notification from "../component/notification";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import {
-  Box,
-  Modal,
-  TextField,
-  FormControl,
-  Button,
-  Typography,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  FilledInput,
-} from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
+import { Box, Modal, Button, Typography } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -29,11 +18,10 @@ const style = {
 };
 
 export default function TransitionsModal() {
-  const auth = getAuth();
-  const [emailValidColor, setEmailValidColor] = React.useState("");
-  const [passwordValidColor, setPasswordValidColor] = React.useState("");
-  const [signupModalOpen, setSignupModalOpen] = React.useState(false);
-  const [signupValues, setSignupValues] = React.useState({
+  const [emailValidColor, setEmailValidColor] = useState("");
+  const [passwordValidColor, setPasswordValidColor] = useState("");
+  const [signupModalOpen, setSignupModalOpen] = useState(false);
+  const [signupValues, setSignupValues] = useState({
     email: "",
     password: "",
     showPassword: false,
@@ -44,15 +32,7 @@ export default function TransitionsModal() {
     message: "",
   });
 
-  const handleChangePassword = (prop) => (event) => {
-    if (event.target.value === "") {
-      setPasswordValidColor("error");
-    } else {
-      setPasswordValidColor("success");
-    }
-    setSignupValues({ ...signupValues, [prop]: event.target.value });
-  };
-
+  //onchange for email
   const handleChangeEmail = (prop) => (event) => {
     if (event.target.value === "") {
       setEmailValidColor("error");
@@ -61,6 +41,20 @@ export default function TransitionsModal() {
     }
     setSignupValues({ ...signupValues, [prop]: event.target.value });
   };
+
+  //onchange for password
+
+  const handleChangePassword = (prop) => (event) => {
+    console.log(event.target.value);
+    if (event.target.value === "") {
+      setPasswordValidColor("error");
+    } else {
+      setPasswordValidColor("success");
+    }
+    setSignupValues({ ...signupValues, [prop]: event.target.value });
+  };
+
+  //hide and show password
 
   const handleChangeShowPassword = () => {
     setSignupValues({
@@ -73,47 +67,42 @@ export default function TransitionsModal() {
     event.preventDefault();
   };
 
-  const emailForRegister = () => (
-    <TextField
-      label="Email Id"
-      type="email"
-      color={emailValidColor}
-      value={signupValues.email}
-      onChange={handleChangeEmail("email")}
-      sx={{ m: 1, width: "32ch" }}
-      variant="filled"
-    />
-  );
+  //post request
 
-  const passwordForRegister = () => (
-    <>
-      <FormControl
-        sx={{ m: 1, width: "32ch" }}
-        variant="filled"
-        color={passwordValidColor}
-      >
-        <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
-        <FilledInput
-          id="filled-adornment-password"
-          type={signupValues.showPassword ? "text" : "password"}
-          value={signupValues.password}
-          onChange={handleChangePassword("password")}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleChangeShowPassword}
-                onMouseDown={handleChangeMouseDownPassword}
-                edge="end"
-              >
-                {signupValues.showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-    </>
-  );
+  const createNewUser = async () => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        email: signupValues.email,
+        password: signupValues.password,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    };
+    const res = await fetch("http://localhost:5000/create-user", fetchData);
+    const user = await res.json();
+    console.log(user);
+  };
+
+  // const createNewUser = async () => {
+  //   let fetchData = {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       email: signupValues.email,
+  //       password: signupValues.password,
+  //     }),
+  //     headers: new Headers({
+  //       "Content-Type": "application/json",
+  //     }),
+  //   };
+
+  //   const res = await fetch("http://localhost:5000/create-user", fetchData);
+  //   const data = await res.json();
+  //   console.log(data);
+  // };
+
+  //after clicking signup button
 
   const handleSignup = () => {
     if (signupValues.email === "" && signupValues.password === "") {
@@ -124,6 +113,7 @@ export default function TransitionsModal() {
     } else if (signupValues.password === "") {
       setPasswordValidColor("error");
     } else {
+      createNewUser();
       setSignupValues({
         ...signupValues,
         email: "",
@@ -132,34 +122,6 @@ export default function TransitionsModal() {
       });
       setEmailValidColor("");
       setPasswordValidColor("");
-
-      createUserWithEmailAndPassword(
-        auth,
-        signupValues.email,
-        signupValues.password
-      )
-        .then((userCredential) => {
-          const user = userCredential.user;
-          localStorage.setItem("User", JSON.stringify(user));
-
-          setSnackbar({
-            ...snackbar,
-            open: true,
-            severity: "success",
-            message: "Sign up successfully Completed",
-          });
-          setSignupModalOpen(false);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setSnackbar({
-            ...snackbar,
-            open: true,
-            severity: "error",
-            message: errorMessage,
-          });
-        });
     }
   };
 
@@ -200,8 +162,18 @@ export default function TransitionsModal() {
               Sign Up
             </Typography>
             <Box sx={{ ml: 2, mt: 1 }}>
-              {emailForRegister()}
-              {passwordForRegister()}
+              <Email
+                emailValidColor={emailValidColor}
+                values={signupValues}
+                handleChangeEmail={handleChangeEmail("email")}
+              />
+              <Password
+                passwordValidColor={passwordValidColor}
+                values={signupValues}
+                handleChangePassword={handleChangePassword("password")}
+                handleChangeShowPassword={handleChangeShowPassword}
+                handleChangeMouseDownPassword={handleChangeMouseDownPassword}
+              />
             </Box>
             <Box sx={{ textAlign: "center", mt: 1 }}>
               <Button

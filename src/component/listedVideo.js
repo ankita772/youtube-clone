@@ -1,12 +1,10 @@
 import * as React from "react";
-import { useNavigate } from "react-router";
+
 import VideoTitle from "../childComponent/videoTitle";
 import moment from "moment";
 import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 
-const ListedVideo = ({ cardData }) => {
-  const navigate = useNavigate();
-
+const ListedVideo = ({ cardData, handleClick }) => {
   return (
     <React.Fragment>
       <Card
@@ -20,11 +18,9 @@ const ListedVideo = ({ cardData }) => {
         <CardMedia
           component="img"
           sx={{ width: 151 }}
-          image="https://i.ytimg.com/vi/7gMLNiEz3nw/hqdefault.jpg?s…QCAokN4AQ==&rs=AOn4CLBLA5uG8DDgm8gYYCGSL8k5Uapr2A"
+          image={cardData.thumbnail_url}
           alt="Live from space album cover"
-          onClick={() => {
-            navigate(`/videopage/${cardData._id}`);
-          }}
+          onClick={() => handleClick(cardData._id)}
         />
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardContent sx={{ flex: "1 0 auto" }}>

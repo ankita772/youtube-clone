@@ -1,4 +1,5 @@
-import { Grid, Avatar, FormControl, Input } from "@mui/material";
+import { Grid, Avatar, FormControl, Input, IconButton } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 
 const AddComment = () => {
   return (
@@ -12,6 +13,9 @@ const AddComment = () => {
               placeholder="Add a public comment"
             />
           </FormControl>
+          <IconButton aria-label="delete" disabled color="primary">
+            <SendIcon />
+          </IconButton>
         </Grid>
       </Grid>
     </>

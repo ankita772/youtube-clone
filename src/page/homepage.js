@@ -1,7 +1,6 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../component/header.js";
-import Topic from "../component/topic.js";
-import VideoSuggestion from "../component/videoSuggestion.js";
+import VideoCard from "../component/videoCard";
 import PropTypes from "prop-types";
 import {
   AppBar,
@@ -11,6 +10,7 @@ import {
   Box,
   Fab,
   Zoom,
+  Grid,
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
@@ -53,8 +53,39 @@ ScrollTop.propTypes = {
   children: PropTypes.element.isRequired,
   window: PropTypes.func,
 };
-
+//HomePage
 const Homepage = (props) => {
+  const [allVideos, setAllVideos] = useState([]);
+
+  useEffect(() => {
+    getAllVideos();
+  }, []);
+
+  const getAllVideos = async () => {
+    const res = await fetch("http://localhost:5000/get-all-videos");
+    const data = await res.json();
+    setAllVideos(data);
+  };
+
+  // const getUniqueChannel = async (channelId) => {
+  //   let fetchData = {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       id: channelId,
+  //     }),
+  //     headers: new Headers({
+  //       "Content-Type": "application/json",
+  //     }),
+  //   };
+  //   const res = await fetch(
+  //     "http://localhost:5000/get-unique-channel",
+  //     fetchData
+  //   );
+  //   const data = await res.json();
+
+  //   setChannelDetail(data[0]);
+  // };
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -64,7 +95,21 @@ const Homepage = (props) => {
       <Toolbar id="back-to-top-anchor" />
 
       {/* <Topic/> */}
-      <VideoSuggestion />
+
+      <div style={{ marginInline: "2%" }}>
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          sx={{ mt: 1 }}
+        >
+          {allVideos.map((cardData) => (
+            <Grid item xs={12} sm={6} md={3}>
+              <VideoCard cardData={cardData} />
+            </Grid>
+          ))}
+        </Grid>
+      </div>
 
       <ScrollTop {...props}>
         <Fab color="primary" size="x-small" aria-label="scroll back to top">

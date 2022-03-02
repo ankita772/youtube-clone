@@ -1,22 +1,26 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
-import Header from "../component/header.js";
-import VideoSuggestionList from "../component/videoSuggestionList.js";
 import { AppBar, CssBaseline, Grid, Typography, Divider } from "@mui/material";
-import { useParams } from "react-router-dom";
+
 import {
+  Header,
   AddComment,
   Comment,
   VideoDescription,
   VideoDetails,
+  ListedVideo,
 } from "../component";
 
 const Videopage = () => {
   const { id } = useParams();
-  const [videoInfo, setVideoInfo] = React.useState([]);
+  const navigate = useNavigate();
+  const [videoInfo, setVideoInfo] = useState([]);
+  const [allVideos, setAllVideos] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchVideoDetails();
+    getAllVideos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -24,7 +28,7 @@ const Videopage = () => {
     let fetchData = {
       method: "POST",
       body: JSON.stringify({
-        _id: id,
+        id: id,
       }),
       headers: new Headers({
         "Content-Type": "application/json",
@@ -38,13 +42,26 @@ const Videopage = () => {
     setVideoInfo(videoDetails[0]);
   };
 
+  //filtering
+
+  const getAllVideos = async () => {
+    const res = await fetch("http://localhost:5000/get-all-videos");
+    const data = await res.json();
+    setAllVideos(data);
+    console.log(data);
+  };
+
+  const handleClick = (id) => {
+    navigate(`/videopage/${id}`);
+    fetchVideoDetails();
+  };
+
   return (
     <React.Fragment>
       <CssBaseline />
       <AppBar>
         <Header />
       </AppBar>
-
       <Grid
         container
         sx={{ mt: { xs: 0, md: 12 } }}
@@ -74,7 +91,9 @@ const Videopage = () => {
           <Comment />
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4}>
-          <VideoSuggestionList videoId={id} />
+          {allVideos.map((cardData) => (
+            <ListedVideo cardData={cardData} handleClick={handleClick} />
+          ))}
         </Grid>
       </Grid>
     </React.Fragment>
