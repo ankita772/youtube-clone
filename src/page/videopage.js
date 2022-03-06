@@ -17,13 +17,13 @@ const Videopage = () => {
   const navigate = useNavigate();
   const [videoInfo, setVideoInfo] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
-
+  // const [clickedLike, setClickedLike] = useState(false);
   useEffect(() => {
     fetchVideoDetails();
     getAllVideos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //get details of a particular video
   const fetchVideoDetails = async () => {
     let fetchData = {
       method: "POST",
@@ -42,7 +42,7 @@ const Videopage = () => {
     setVideoInfo(videoDetails[0]);
   };
 
-  //filtering
+  //get all video details
 
   const getAllVideos = async () => {
     const res = await fetch("http://localhost:5000/get-all-videos");
@@ -51,9 +51,47 @@ const Videopage = () => {
     console.log(data);
   };
 
+  //click video from listedVideo
   const handleClick = (id) => {
     navigate(`/videopage/${id}`);
     fetchVideoDetails();
+  };
+
+  //update like when clicked like button
+  const handleUpdateLike = async (videoId, like) => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        id: videoId,
+        like: like,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    };
+    const res = await fetch("http://localhost:5000/update-like", fetchData);
+    const data = await res.json();
+    fetchVideoDetails();
+    //setClickedLike(true);
+    console.log(data);
+  };
+
+  //update dislike when clicked dislike button
+  const handleUpdateDislike = async (videoId, dislike) => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        id: videoId,
+        dislike: dislike,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    };
+    const res = await fetch("http://localhost:5000/update-dislike", fetchData);
+    const data = await res.json();
+    fetchVideoDetails();
+    console.log(data);
   };
 
   return (
@@ -82,7 +120,11 @@ const Videopage = () => {
             {videoInfo.title}
           </Typography>
 
-          <VideoDetails videoInfo={videoInfo} />
+          <VideoDetails
+            videoInfo={videoInfo}
+            handleUpdateLike={handleUpdateLike}
+            handleUpdateDislike={handleUpdateDislike}
+          />
           <Divider />
           <VideoDescription videoInfo={videoInfo} />
           <Divider />

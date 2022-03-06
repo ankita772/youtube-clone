@@ -5,7 +5,12 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ShareIcon from "@mui/icons-material/Share";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 
-const VideoDetails = ({ videoInfo }) => {
+const VideoDetails = ({
+  videoInfo,
+  handleUpdateLike,
+  handleUpdateDislike,
+  //clickedLike,
+}) => {
   return (
     <>
       <Grid container sx={{ display: "flex", mb: 2 }}>
@@ -27,8 +32,20 @@ const VideoDetails = ({ videoInfo }) => {
             fontSize: { xs: 5 },
           }}
         >
-          <Button startIcon={<ThumbUpAltIcon />}>{videoInfo.like}</Button>
-          <Button startIcon={<ThumbDownAltIcon />}>{videoInfo.dislike}</Button>
+          <Button
+            startIcon={<ThumbUpAltIcon />}
+            onClick={() => handleUpdateLike(videoInfo._id, videoInfo.like)}
+          >
+            {videoInfo.like}
+          </Button>
+          <Button
+            startIcon={<ThumbDownAltIcon />}
+            onClick={() =>
+              handleUpdateDislike(videoInfo._id, videoInfo.dislike)
+            }
+          >
+            {videoInfo.dislike}
+          </Button>
           <Button startIcon={<ShareIcon />}>Share</Button>
           <Button startIcon={<SaveAltIcon />}>Save</Button>
         </Grid>

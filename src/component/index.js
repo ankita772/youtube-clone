@@ -1,6 +1,6 @@
 import Header from "./header.js";
 import AddComment from "./addComment";
-
+import Leftbar from "../childComponent/leftbar";
 import Comment from "./comment";
 import CommentAccordian from "./commentAccordian";
 import VideoDescription from "./VideoDescription";
@@ -15,4 +15,5 @@ export {
   VideoDescription,
   VideoDetails,
   ListedVideo,
+  Leftbar,
 };
