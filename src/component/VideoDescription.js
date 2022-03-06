@@ -4,7 +4,7 @@ const VideoDescription = ({ videoInfo }) => {
   return (
     <>
       <Grid container>
-        <Grid xs={8} sm={10} md={10} sx={{ display: "flex", mt: 2 }}>
+        <Grid item xs={8} sm={10} md={10} sx={{ display: "flex", mt: 2 }}>
           <Avatar alt="Cindy Baker" src="" />
           <div style={{ marginLeft: "2%" }}>
             <Box sx={{ fontSize: "15px", fontWeight: "bold" }}>
@@ -18,7 +18,7 @@ const VideoDescription = ({ videoInfo }) => {
             </Box>
           </div>
         </Grid>
-        <Grid xs={4} sm={2} md={2} sx={{ mt: 2 }}>
+        <Grid item xs={4} sm={2} md={2} sx={{ mt: 2 }}>
           <Button variant="contained">Subscribe</Button>
         </Grid>
       </Grid>

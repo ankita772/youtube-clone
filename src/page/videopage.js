@@ -21,7 +21,7 @@ const Videopage = () => {
   useEffect(() => {
     fetchVideoDetails();
     getAllVideos();
-  }, []);
+  }, [id]);
 
   //get details of a particular video
   const fetchVideoDetails = async () => {
@@ -54,7 +54,6 @@ const Videopage = () => {
   //click video from listedVideo
   const handleClick = (id) => {
     navigate(`/videopage/${id}`);
-    fetchVideoDetails();
   };
 
   //update like when clicked like button
@@ -133,8 +132,12 @@ const Videopage = () => {
           <Comment />
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4}>
-          {allVideos.map((cardData) => (
-            <ListedVideo cardData={cardData} handleClick={handleClick} />
+          {allVideos.map((cardData, index) => (
+            <ListedVideo
+              cardData={cardData}
+              handleClick={handleClick}
+              key={index}
+            />
           ))}
         </Grid>
       </Grid>

@@ -29,7 +29,7 @@ const SearchingVideosPage = () => {
           display: "flex",
         }}
       >
-        <Grid xs={3} sm={3} md={3}>
+        <Grid xs={3} sm={3} md={3} item>
           <Img
             alt="complex"
             src="https://i.ytimg.com/vi/7gMLNiEz3nw/hqdefault.jpg?s…QCAokN4AQ==&rs=AOn4CLBLA5uG8DDgm8gYYCGSL8k5Uapr2A"
@@ -40,7 +40,7 @@ const SearchingVideosPage = () => {
             }}
           />
         </Grid>
-        <Grid xs={7} sm={7} md={7} sx={{ m: 2 }}>
+        <Grid item xs={7} sm={7} md={7} sx={{ m: 2 }}>
           <Typography
             sx={{ fontSize: { xs: "10px", md: "20px" }, fontWeight: "bold" }}
           >
@@ -67,7 +67,7 @@ const SearchingVideosPage = () => {
           </div>
 
           <Grid container wrap="nowrap" sx={{ mt: 1 }}>
-            <Grid zeroMinWidth>
+            <Grid item zeroMinWidth>
               <Typography
                 noWrap
                 sx={{ fontSize: { xs: "8px", sm: "8px", md: "12px" } }}

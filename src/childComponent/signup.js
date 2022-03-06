@@ -28,7 +28,7 @@ export default function TransitionsModal() {
   });
   const [snackbar, setSnackbar] = React.useState({
     open: false,
-    severity: "",
+    severity: "info",
     message: "",
   });
 

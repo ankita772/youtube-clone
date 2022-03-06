@@ -4,7 +4,7 @@ const Comment = () => {
   return (
     <>
       <Grid container>
-        <Grid xs={12} sx={{ display: "flex", mt: 5, mb: 3, mr: 2 }}>
+        <Grid item xs={12} sx={{ display: "flex", mt: 5, mb: 3, mr: 2 }}>
           <Avatar alt="Cindy Baker" src="" />
           <div style={{ marginLeft: "2%" }}>
             <div style={{ display: "flex" }}>

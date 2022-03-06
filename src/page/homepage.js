@@ -103,8 +103,8 @@ const Homepage = (props) => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           sx={{ mt: 1 }}
         >
-          {allVideos.map((cardData) => (
-            <Grid item xs={12} sm={6} md={3}>
+          {allVideos.map((cardData, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
               <VideoCard cardData={cardData} />
             </Grid>
           ))}

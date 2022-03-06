@@ -55,7 +55,13 @@ export default function FloatingActionButtonExtendedSize() {
 
       {allTopic.map((i, index) =>
         index > next && index < next + 12 ? (
-          <Fab variant="extended" size="small" color="primary" aria-label={i}>
+          <Fab
+            variant="extended"
+            size="small"
+            color="primary"
+            aria-label={i}
+            key={index}
+          >
             {i}
           </Fab>
         ) : (

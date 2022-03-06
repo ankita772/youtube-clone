@@ -14,13 +14,14 @@ const VideoDetails = ({
   return (
     <>
       <Grid container sx={{ display: "flex", mb: 2 }}>
-        <Grid xs={12} md={4} lg={4} sx={{ display: "flex" }}>
+        <Grid item xs={12} md={4} lg={4} sx={{ display: "flex" }}>
           <Box sx={{ fontSize: 14 }}>{videoInfo.views} views</Box>
           <Box sx={{ fontSize: 14, ml: 1 }}>
             • {moment(videoInfo.created_at).format("DD-MMM-YYYY")}
           </Box>
         </Grid>
         <Grid
+          item
           xs={12}
           md={8}
           lg={8}

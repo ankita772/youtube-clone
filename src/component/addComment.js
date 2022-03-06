@@ -5,7 +5,7 @@ const AddComment = () => {
   return (
     <>
       <Grid container>
-        <Grid xs={12} sx={{ display: "flex", mt: 2, mr: 2 }}>
+        <Grid item xs={12} sx={{ display: "flex", mt: 2, mr: 2 }}>
           <Avatar alt="Cindy Baker" src="" />
           <FormControl fullWidth sx={{ ml: 2 }} variant="standard">
             <Input

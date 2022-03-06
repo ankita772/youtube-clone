@@ -8,6 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import MicIcon from "@mui/icons-material/Mic";
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -50,6 +51,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const HeaderIconList = ({ leftbar, toggleDrawer, handleSearch }) => {
+  const navigate = useNavigate();
   return (
     <>
       <IconButton
@@ -58,8 +60,9 @@ const HeaderIconList = ({ leftbar, toggleDrawer, handleSearch }) => {
         color="inherit"
         aria-label="open drawer"
         sx={{ mr: 2, color: "black" }}
+        onClick={toggleDrawer(true)}
       >
-        <MenuIcon onClick={toggleDrawer(true)} />
+        <MenuIcon />
         <Drawer anchor="left" open={leftbar} onClose={toggleDrawer(false)}>
           <Leftbar
             onKeyDown={toggleDrawer(false)}
@@ -72,6 +75,7 @@ const HeaderIconList = ({ leftbar, toggleDrawer, handleSearch }) => {
         edge="start"
         color="inherit"
         aria-label="open drawer"
+        onClick={() => navigate("/")}
       >
         <YouTubeIcon
           sx={{
@@ -79,19 +83,19 @@ const HeaderIconList = ({ leftbar, toggleDrawer, handleSearch }) => {
             color: "red",
           }}
         />
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{
+            display: { xs: "none", sm: "block" },
+            fontWeight: "bold",
+            color: "black",
+            mr: 2,
+          }}
+        >
+          YouTube
+        </Typography>
       </IconButton>
-      <Typography
-        variant="h6"
-        component="div"
-        sx={{
-          display: { xs: "none", sm: "block" },
-          fontWeight: "bold",
-          color: "black",
-          mr: 2,
-        }}
-      >
-        YouTube
-      </Typography>
       <Search sx={{ display: { xs: "none", sm: "none", md: "flex" } }}>
         <SearchIconWrapper>
           <SearchIcon sx={{ color: "black" }} />

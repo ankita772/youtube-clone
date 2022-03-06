@@ -27,7 +27,7 @@ const Signin = () => {
   });
   const [snackbar, setSnackbar] = React.useState({
     open: false,
-    severity: "",
+    severity: "info",
     message: "",
   });
   //onchange for email

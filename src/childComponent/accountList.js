@@ -34,7 +34,7 @@ const AccountList = ({
   const auth = getAuth();
   const [snackbar, setSnackbar] = React.useState({
     open: false,
-    severity: "",
+    severity: "info",
     message: "",
   });
 
