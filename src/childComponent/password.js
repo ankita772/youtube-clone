@@ -5,11 +5,14 @@ import {
   InputAdornment,
   InputLabel,
   FilledInput,
+  FormHelperText,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Password = ({
+  error,
+  helperText,
   values,
   handleChangePassword,
   handleChangeShowPassword,
@@ -18,8 +21,14 @@ const Password = ({
   return (
     <>
       <FormControl sx={{ m: 1, width: "32ch" }} variant="filled">
-        <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
+        <InputLabel
+          htmlFor="filled-adornment-password"
+          sx={error ? { color: "red" } : {}}
+        >
+          Password
+        </InputLabel>
         <FilledInput
+          error={error}
           id="filled-adornment-password"
           type={values.showPassword ? "text" : "password"}
           value={values.password}
@@ -37,6 +46,7 @@ const Password = ({
             </InputAdornment>
           }
         />
+        <FormHelperText sx={{ color: "red" }}>{helperText}</FormHelperText>
       </FormControl>
     </>
   );

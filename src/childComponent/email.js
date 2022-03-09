@@ -1,10 +1,12 @@
 import React from "react";
 import { TextField } from "@mui/material";
 
-const Email = ({ handleChangeEmail }) => {
+const Email = ({ handleChangeEmail, error, helperText }) => {
   return (
     <>
       <TextField
+        error={error}
+        helperText={helperText}
         label="Email Id"
         type="email"
         onChange={handleChangeEmail}

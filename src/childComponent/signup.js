@@ -40,6 +40,13 @@ export default function TransitionsModal({ setIsSignup }) {
     message: "",
   });
 
+  const [error, setError] = useState({
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+  });
+
   //onchange name
   const handleChangeName = (prop) => (event) => {
     setSignupValues({ ...signupValues, [prop]: event.target.value });
@@ -73,6 +80,36 @@ export default function TransitionsModal({ setIsSignup }) {
     event.preventDefault();
   };
 
+  const validation = () => {
+    // false -> "",undefined,null,0
+    // true -> "juabsd",
+    const errorFound = {
+      name: "",
+      email: "",
+      password: "",
+      phone: "",
+    };
+
+    if (signupValues.name.trim() === "") {
+      errorFound.name = "Please enter a name";
+    }
+    if (!validator.isEmail(signupValues.email)) {
+      errorFound.email = "Please enter a valid email";
+    }
+    if (signupValues.password.trim() === "") {
+      errorFound.password = "Please enter a password";
+    } else if (signupValues.password.trim().length < 6) {
+      errorFound.password = "Password length should be more than 6 ";
+    }
+    if (signupValues.phone.trim() === "") {
+      errorFound.phone = "Please enter a phone number";
+    } else if (signupValues.phone.trim().length < 10) {
+      errorFound.phone = "Phone number should of 10 digits";
+    }
+
+    setError(errorFound);
+  };
+
   const handleSignup = () => {};
 
   return (
@@ -104,6 +141,8 @@ export default function TransitionsModal({ setIsSignup }) {
             </Typography>
             <Box sx={{ ml: 2, mt: 1 }}>
               <TextField
+                error={error.name}
+                helperText={error.name}
                 type="text"
                 label="Name"
                 variant="filled"
@@ -112,6 +151,8 @@ export default function TransitionsModal({ setIsSignup }) {
               />
 
               <TextField
+                error={error.phone}
+                helperText={error.phone}
                 type="number"
                 label="Phone Number"
                 variant="filled"
@@ -119,9 +160,15 @@ export default function TransitionsModal({ setIsSignup }) {
                 sx={{ m: 1, width: "32ch" }}
               />
 
-              <Email handleChangeEmail={handleChangeEmail("email")} />
+              <Email
+                handleChangeEmail={handleChangeEmail("email")}
+                error={error.email}
+                helperText={error.email}
+              />
 
               <Password
+                error={error.password}
+                helperText={error.password}
                 values={signupValues}
                 handleChangePassword={handleChangePassword("password")}
                 handleChangeShowPassword={handleChangeShowPassword}
@@ -133,7 +180,7 @@ export default function TransitionsModal({ setIsSignup }) {
                 variant="contained"
                 color="success"
                 sx={{ textAlign: "center" }}
-                onClick={handleSignup}
+                onClick={validation}
               >
                 Sign Up
               </Button>
