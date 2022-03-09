@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import validator from "validator";
 import Email from "./email";
 import Password from "./password";
 import Notification from "../component/notification";
@@ -17,8 +18,15 @@ const style = {
 };
 
 const Signin = () => {
+  //email
   const [emailValidColor, setEmailValidColor] = useState("");
+  const [helperTextEmail, setHelperTextEmail] = useState(false);
+  const [errMessageEmail, setErrMessageEmail] = useState("");
+  //password
   const [passwordValidColor, setPasswordValidColor] = useState("");
+  const [helperTextPassword, setHelperTextPassword] = useState(false);
+  const [errMessagePassword, setErrMessagePassword] = useState("");
+
   const [signinModalOpen, setSigninModalOpen] = useState(false);
   const [signinValues, setSigninValues] = useState({
     email: "",
@@ -27,7 +35,7 @@ const Signin = () => {
   });
   const [snackbar, setSnackbar] = React.useState({
     open: false,
-    severity: "info",
+    severity: "success",
     message: "",
   });
   //onchange for email
@@ -60,25 +68,41 @@ const Signin = () => {
     event.preventDefault();
   };
 
+  // const getUser = async () => {
+  //   let fetchData = {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       email: signinValues.email,
+  //       password: signinValues.password,
+  //     }),
+  //     headers: new Headers({
+  //       "Content-Type": "application/json",
+  //     }),
+  //   };
+  //   const res = await fetch("http://localhost:5000/get-user", fetchData);
+  //   const user = await res.json();
+  //   console.log(user);
+
+  // };
   //after clicking sign in
 
   const handleSignin = () => {
-    if (signinValues.email === "" && signinValues.password === "") {
-      setEmailValidColor("error");
-      setPasswordValidColor("error");
-    } else if (signinValues.email === "") {
-      setEmailValidColor("error");
-    } else if (signinValues.password === "") {
-      setPasswordValidColor("error");
+    if (
+      validator.isEmail(signinValues.email) &&
+      signinValues.password.length >= 6
+    ) {
+      console.log("sign in compleated");
     } else {
-      setSigninValues({
-        ...signinValues,
-        email: "",
-        password: "",
-        showPassword: false,
-      });
-      setEmailValidColor("");
-      setPasswordValidColor("");
+      if (!validator.isEmail(signinValues.email)) {
+        setEmailValidColor("error");
+        setHelperTextEmail(true);
+        setErrMessageEmail("Invalid Email");
+      }
+      if (signinValues.password.length < 6) {
+        setPasswordValidColor("error");
+        setHelperTextPassword(true);
+        setErrMessagePassword("Password must be at least 6 digits");
+      }
     }
   };
 
@@ -99,16 +123,6 @@ const Signin = () => {
         >
           Sign IN
         </Button>
-        <Notification
-          open={snackbar.open}
-          vertical="top"
-          horizontal="right"
-          severity={snackbar.severity}
-          message={snackbar.message}
-          onClose={() => {
-            setSnackbar({ ...snackbar, open: false });
-          }}
-        />
         <Modal open={signinModalOpen} onClose={() => setSigninModalOpen(false)}>
           <Box sx={style}>
             <Typography
@@ -144,6 +158,16 @@ const Signin = () => {
             </Box>
           </Box>
         </Modal>
+        <Notification
+          open={snackbar.open}
+          vertical="top"
+          horizontal="right"
+          severity={snackbar.severity}
+          message={snackbar.message}
+          onClose={() => {
+            setSnackbar({ ...snackbar, open: false });
+          }}
+        />
       </Box>
     </>
   );

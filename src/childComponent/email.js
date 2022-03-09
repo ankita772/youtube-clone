@@ -1,14 +1,13 @@
 import React from "react";
 import { TextField } from "@mui/material";
 
-const Email = ({ emailValidColor, values, handleChangeEmail }) => {
+const Email = ({ emailValidColor, handleChangeEmail }) => {
   return (
     <>
       <TextField
         label="Email Id"
         type="email"
         color={emailValidColor}
-        value={values.email}
         onChange={handleChangeEmail}
         sx={{ m: 1, width: "32ch" }}
         variant="filled"

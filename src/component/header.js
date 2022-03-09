@@ -18,6 +18,7 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [isSignup, setIsSignup] = useState(false);
   const [isSignin, setIsSignin] = useState(false);
   const [openListAfterSignin, setOpenListAfterSignin] = useState(false);
   const [openAccountList, setOpenAccountList] = useState(false);
@@ -71,7 +72,7 @@ const Header = () => {
 
   const preSignin = () => (
     <Box sx={{ display: "flex", mr: 2 }}>
-      <Signup />
+      {isSignup ? "" : <Signup setIsSignup={setIsSignup} />}
       <Signin completeSignin={setIsSignin} />
     </Box>
   );
