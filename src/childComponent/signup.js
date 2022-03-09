@@ -29,7 +29,12 @@ export default function TransitionsModal({ setIsSignup }) {
   //name
   const [formError, setFormError] = useState("");
   const [errorStatement, setErrorStatement] = useState("");
-  const [validation, setValidation] = useState();
+  const [validation, setValidation] = useState({
+    email: "",
+    password: "",
+    name: "",
+    phoneNumber: "",
+  });
   const error = {
     name: false,
     phoneNumber: false,
@@ -145,7 +150,7 @@ export default function TransitionsModal({ setIsSignup }) {
       }
       if (!validator.isEmail(signupValues.email)) {
         validColor.email = "error";
-        error.Email = true;
+        error.email = true;
         errorText.email = "Please Enter Valid Email Id";
       }
       if (signupValues.password.length < 6) {
