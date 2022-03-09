@@ -18,15 +18,6 @@ const style = {
 };
 
 const Signin = () => {
-  //email
-  const [emailValidColor, setEmailValidColor] = useState("");
-  const [helperTextEmail, setHelperTextEmail] = useState(false);
-  const [errMessageEmail, setErrMessageEmail] = useState("");
-  //password
-  const [passwordValidColor, setPasswordValidColor] = useState("");
-  const [helperTextPassword, setHelperTextPassword] = useState(false);
-  const [errMessagePassword, setErrMessagePassword] = useState("");
-
   const [signinModalOpen, setSigninModalOpen] = useState(false);
   const [signinValues, setSigninValues] = useState({
     email: "",
@@ -40,20 +31,10 @@ const Signin = () => {
   });
   //onchange for email
   const handleChangeEmail = (prop) => (event) => {
-    if (event.target.value === "") {
-      setEmailValidColor("error");
-    } else {
-      setEmailValidColor("success");
-    }
     setSigninValues({ ...signinValues, [prop]: event.target.value });
   };
   //onchange for password
   const handleChangePassword = (prop) => (event) => {
-    if (event.target.value === "") {
-      setPasswordValidColor("error");
-    } else {
-      setPasswordValidColor("success");
-    }
     setSigninValues({ ...signinValues, [prop]: event.target.value });
   };
   //hide & show password
@@ -68,43 +49,7 @@ const Signin = () => {
     event.preventDefault();
   };
 
-  // const getUser = async () => {
-  //   let fetchData = {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       email: signinValues.email,
-  //       password: signinValues.password,
-  //     }),
-  //     headers: new Headers({
-  //       "Content-Type": "application/json",
-  //     }),
-  //   };
-  //   const res = await fetch("http://localhost:5000/get-user", fetchData);
-  //   const user = await res.json();
-  //   console.log(user);
-
-  // };
-  //after clicking sign in
-
-  const handleSignin = () => {
-    if (
-      validator.isEmail(signinValues.email) &&
-      signinValues.password.length >= 6
-    ) {
-      console.log("sign in compleated");
-    } else {
-      if (!validator.isEmail(signinValues.email)) {
-        setEmailValidColor("error");
-        setHelperTextEmail(true);
-        setErrMessageEmail("Invalid Email");
-      }
-      if (signinValues.password.length < 6) {
-        setPasswordValidColor("error");
-        setHelperTextPassword(true);
-        setErrMessagePassword("Password must be at least 6 digits");
-      }
-    }
-  };
+  const handleSignin = () => {};
 
   return (
     <>
@@ -134,12 +79,10 @@ const Signin = () => {
             </Typography>
             <Box sx={{ ml: 2, mt: 1 }}>
               <Email
-                emailValidColor={emailValidColor}
                 values={signinValues}
                 handleChangeEmail={handleChangeEmail("email")}
               />
               <Password
-                passwordValidColor={passwordValidColor}
                 values={signinValues}
                 handleChangePassword={handleChangePassword("password")}
                 handleChangeShowPassword={handleChangeShowPassword}

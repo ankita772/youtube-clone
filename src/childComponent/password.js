@@ -10,7 +10,6 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Password = ({
-  passwordValidColor,
   values,
   handleChangePassword,
   handleChangeShowPassword,
@@ -18,11 +17,7 @@ const Password = ({
 }) => {
   return (
     <>
-      <FormControl
-        sx={{ m: 1, width: "32ch" }}
-        variant="filled"
-        color={passwordValidColor}
-      >
+      <FormControl sx={{ m: 1, width: "32ch" }} variant="filled">
         <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
         <FilledInput
           id="filled-adornment-password"
