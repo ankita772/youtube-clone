@@ -4,14 +4,7 @@ import Email from "./email";
 import Password from "./password";
 import Notification from "../component/notification";
 
-import {
-  Box,
-  Modal,
-  Button,
-  Typography,
-  TextField,
-  FormHelperText,
-} from "@mui/material";
+import { Box, Modal, Button, Typography, TextField } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -25,7 +18,7 @@ const style = {
   p: 4,
 };
 
-export default function TransitionsModal({ setIsSignup }) {
+export default function TransitionsModal({ setIsSignup, isSignup }) {
   const [signupModalOpen, setSignupModalOpen] = useState(false);
   const [signupValues, setSignupValues] = useState({
     name: "",
@@ -50,21 +43,25 @@ export default function TransitionsModal({ setIsSignup }) {
   //onchange name
   const handleChangeName = (prop) => (event) => {
     setSignupValues({ ...signupValues, [prop]: event.target.value });
+    setError({ ...error, name: "" });
   };
   //onChane ph
   const handleChangePh = (prop) => (event) => {
     setSignupValues({ ...signupValues, [prop]: event.target.value });
+    setError({ ...error, phone: "" });
   };
 
   //onchange for email
   const handleChangeEmail = (prop) => (event) => {
     setSignupValues({ ...signupValues, [prop]: event.target.value });
+    setError({ ...error, email: "" });
   };
 
   //onchange for password
 
   const handleChangePassword = (prop) => (e) => {
     setSignupValues({ ...signupValues, [prop]: e.target.value });
+    setError({ ...error, password: "" });
   };
 
   //hide and show password
@@ -110,12 +107,60 @@ export default function TransitionsModal({ setIsSignup }) {
     setError(errorFound);
   };
 
-  const handleSignup = () => {};
+  //add user api
+
+  const addUser = async () => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        name: signupValues.name,
+        phone: signupValues.phone,
+        email: signupValues.email,
+        password: signupValues.password,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    };
+    const res = await fetch("http://localhost:5000/add-user", fetchData);
+    if (res) {
+      setSnackbar({
+        open: true,
+        severity: "success",
+        message: "User Sign Up Compleated Successfully",
+      });
+      setIsSignup(true);
+      setSignupModalOpen(false);
+    }
+  };
+
+  const handleSignup = () => {
+    if (
+      signupValues.name.trim() !== "" &&
+      signupValues.phone.trim() !== "" &&
+      signupValues.phone.trim().length >= 10 &&
+      validator.isEmail(signupValues.email) &&
+      signupValues.password.trim() !== "" &&
+      signupValues.password.trim().length >= 6
+    ) {
+      addUser();
+      setSignupValues({
+        ...signupValues,
+        name: "",
+        phone: "",
+        email: "",
+        password: "",
+      });
+    } else {
+      validation();
+    }
+  };
 
   return (
     <>
       <Box sx={{ mr: 2 }}>
         <Button
+          disabled={isSignup}
           variant="outlined"
           sx={{
             color: "info",
@@ -143,27 +188,28 @@ export default function TransitionsModal({ setIsSignup }) {
               <TextField
                 error={error.name}
                 helperText={error.name}
-                type="text"
                 label="Name"
+                value={signupValues.name}
                 variant="filled"
-                onChange={handleChangeName("text")}
+                onChange={handleChangeName("name")}
                 sx={{ m: 1, width: "32ch" }}
               />
 
               <TextField
                 error={error.phone}
                 helperText={error.phone}
-                type="number"
                 label="Phone Number"
+                value={signupValues.phone}
                 variant="filled"
-                onChange={handleChangePh("number")}
+                onChange={handleChangePh("phone")}
                 sx={{ m: 1, width: "32ch" }}
               />
 
               <Email
-                handleChangeEmail={handleChangeEmail("email")}
                 error={error.email}
                 helperText={error.email}
+                values={signupValues.email}
+                handleChangeEmail={handleChangeEmail("email")}
               />
 
               <Password
@@ -180,7 +226,7 @@ export default function TransitionsModal({ setIsSignup }) {
                 variant="contained"
                 color="success"
                 sx={{ textAlign: "center" }}
-                onClick={validation}
+                onClick={handleSignup}
               >
                 Sign Up
               </Button>

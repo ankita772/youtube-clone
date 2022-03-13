@@ -8,7 +8,7 @@ const VideoDescription = ({ videoInfo }) => {
           <Avatar alt="Cindy Baker" src="" />
           <div style={{ marginLeft: "2%" }}>
             <Box sx={{ fontSize: "15px", fontWeight: "bold" }}>
-              Gate smashers
+              {videoInfo.channel_id.channel_name}
             </Box>
             <Box sx={{ fontSize: "10px" }}>77k subscribers</Box>
             <Box sx={{ fontSize: { xs: "8px", md: "15px" }, mt: 2, mb: 2 }}>
@@ -19,7 +19,7 @@ const VideoDescription = ({ videoInfo }) => {
           </div>
         </Grid>
         <Grid item xs={4} sm={2} md={2} sx={{ mt: 2 }}>
-          <Button variant="contained">Subscribe</Button>
+          <Button variant="contained">{videoInfo.channel_id.subscriber}</Button>
         </Grid>
       </Grid>
     </>

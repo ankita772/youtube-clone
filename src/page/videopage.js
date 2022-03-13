@@ -17,6 +17,7 @@ const Videopage = () => {
   const navigate = useNavigate();
   const [videoInfo, setVideoInfo] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
+
   // const [clickedLike, setClickedLike] = useState(false);
   useEffect(() => {
     fetchVideoDetails();
@@ -56,42 +57,42 @@ const Videopage = () => {
     navigate(`/videopage/${id}`);
   };
 
-  //update like when clicked like button
-  const handleUpdateLike = async (videoId, like) => {
-    let fetchData = {
-      method: "POST",
-      body: JSON.stringify({
-        id: videoId,
-        like: like,
-      }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-    };
-    const res = await fetch("http://localhost:5000/update-like", fetchData);
-    const data = await res.json();
-    fetchVideoDetails();
-    //setClickedLike(true);
-    console.log(data);
-  };
+  // //update like when clicked like button
+  // const handleUpdateLike = async (videoId, like) => {
+  //   let fetchData = {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       id: videoId,
+  //       like: like,
+  //     }),
+  //     headers: new Headers({
+  //       "Content-Type": "application/json",
+  //     }),
+  //   };
+  //   const res = await fetch("http://localhost:5000/update-like", fetchData);
+  //   const data = await res.json();
+  //   fetchVideoDetails();
+  //   //setClickedLike(true);
+  //   console.log(data);
+  // };
 
-  //update dislike when clicked dislike button
-  const handleUpdateDislike = async (videoId, dislike) => {
-    let fetchData = {
-      method: "POST",
-      body: JSON.stringify({
-        id: videoId,
-        dislike: dislike,
-      }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-    };
-    const res = await fetch("http://localhost:5000/update-dislike", fetchData);
-    const data = await res.json();
-    fetchVideoDetails();
-    console.log(data);
-  };
+  // //update dislike when clicked dislike button
+  // const handleUpdateDislike = async (videoId, dislike) => {
+  //   let fetchData = {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       id: videoId,
+  //       dislike: dislike,
+  //     }),
+  //     headers: new Headers({
+  //       "Content-Type": "application/json",
+  //     }),
+  //   };
+  //   const res = await fetch("http://localhost:5000/update-dislike", fetchData);
+  //   const data = await res.json();
+  //   fetchVideoDetails();
+  //   console.log(data);
+  // };
 
   return (
     <React.Fragment>
@@ -121,8 +122,8 @@ const Videopage = () => {
 
           <VideoDetails
             videoInfo={videoInfo}
-            handleUpdateLike={handleUpdateLike}
-            handleUpdateDislike={handleUpdateDislike}
+            //handleUpdateLike={handleUpdateLike}
+            //handleUpdateDislike={handleUpdateDislike}
           />
           <Divider />
           <VideoDescription videoInfo={videoInfo} />

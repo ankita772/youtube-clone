@@ -17,7 +17,7 @@ const style = {
   p: 4,
 };
 
-const Signin = () => {
+const Signin = ({ setIsSignin }) => {
   const [signinModalOpen, setSigninModalOpen] = useState(false);
   const [signinValues, setSigninValues] = useState({
     email: "",
@@ -29,13 +29,21 @@ const Signin = () => {
     severity: "success",
     message: "",
   });
+
+  const [error, setError] = useState({
+    email: "",
+    password: "",
+  });
+
   //onchange for email
   const handleChangeEmail = (prop) => (event) => {
     setSigninValues({ ...signinValues, [prop]: event.target.value });
+    setError({ ...error, email: "" });
   };
   //onchange for password
   const handleChangePassword = (prop) => (event) => {
     setSigninValues({ ...signinValues, [prop]: event.target.value });
+    setError({ ...error, password: "" });
   };
   //hide & show password
   const handleChangeShowPassword = () => {
@@ -49,7 +57,75 @@ const Signin = () => {
     event.preventDefault();
   };
 
-  const handleSignin = () => {};
+  const validation = () => {
+    const errorFound = {
+      email: "",
+      pssword: "",
+    };
+    if (!validator.isEmail(signinValues.email)) {
+      errorFound.email = "Please Enter a Valid Email";
+    }
+    if (signinValues.password.trim() === "") {
+      errorFound.password = "Please Enter Password";
+    } else if (signinValues.password.trim().length < 6) {
+      errorFound.password = "Password length should be more than 6 ";
+    }
+    setError(errorFound);
+  };
+
+  //get user api
+
+  const getUser = async () => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        email: signinValues.email,
+        password: signinValues.password,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    };
+
+    const res = await fetch("http://localhost:5000/login", fetchData);
+    const data = await res.json();
+    if (data.token) {
+      localStorage.setItem("userToken", data.token);
+      setSnackbar({
+        ...snackbar,
+        open: true,
+        severity: "success",
+        message: "Login compleated successfully",
+      });
+      setIsSignin(true);
+      setSigninModalOpen(false);
+    } else if (data.message) {
+      setSnackbar({
+        ...snackbar,
+        open: true,
+        severity: "error",
+        message: data.message,
+      });
+    }
+  };
+  //after clicking signin button
+
+  const handleSignin = () => {
+    if (
+      validator.isEmail(signinValues.email) &&
+      signinValues.password.trim().length !== "" &&
+      signinValues.password.trim().length >= 6
+    ) {
+      getUser();
+      setSigninValues({
+        ...signinValues,
+        email: "",
+        password: "",
+      });
+    } else {
+      validation();
+    }
+  };
 
   return (
     <>
@@ -79,10 +155,14 @@ const Signin = () => {
             </Typography>
             <Box sx={{ ml: 2, mt: 1 }}>
               <Email
-                values={signinValues}
+                error={error.email}
+                helperText={error.email}
+                values={signinValues.email}
                 handleChangeEmail={handleChangeEmail("email")}
               />
               <Password
+                error={error.password}
+                helperText={error.password}
                 values={signinValues}
                 handleChangePassword={handleChangePassword("password")}
                 handleChangeShowPassword={handleChangeShowPassword}

@@ -25,7 +25,6 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [leftbar, setLeftBar] = useState(false);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -66,45 +65,60 @@ const Header = () => {
     ) {
       return;
     }
-
     setLeftBar(isOpen);
   };
 
   const preSignin = () => (
     <Box sx={{ display: "flex", mr: 2 }}>
-      {isSignup ? "" : <Signup setIsSignup={setIsSignup} />}
-      <Signin completeSignin={setIsSignin} />
+      <Signup setIsSignup={setIsSignup} isSignup={isSignup} />
+      <Signin setIsSignin={setIsSignin} />
     </Box>
   );
 
   const afterSignin = () => (
-    <Box
-      sx={{
-        display: { xs: "none", sm: "none", md: "flex" },
-        justifyContent: "space-evenly",
-      }}
-    >
-      <IconButton size="large" color="inherit" aria-label="videoCall">
-        <VideoCallIcon sx={{ color: "black" }} />
-      </IconButton>
-
-      <IconButton size="large" color="inherit" aria-label="gridView">
-        <GridViewIcon sx={{ color: "black" }} />
-      </IconButton>
-      <IconButton
-        size="large"
-        edge="end"
-        color="inherit"
-        aria-label="notification"
+    <>
+      <Box
+        sx={{
+          display: { xs: "none", sm: "none", md: "flex" },
+          justifyContent: "space-evenly",
+        }}
       >
-        <NotificationsNoneIcon sx={{ color: "black" }} />
-      </IconButton>
-      <IconButton sx={{ ml: 1 }} onClick={handleProfileMenuOpen}>
-        <Avatar alt="candy bekar" src={bird} />
-      </IconButton>
-    </Box>
+        <IconButton size="large" color="inherit" aria-label="videoCall">
+          <VideoCallIcon sx={{ color: "black" }} />
+        </IconButton>
+
+        <IconButton size="large" color="inherit" aria-label="gridView">
+          <GridViewIcon sx={{ color: "black" }} />
+        </IconButton>
+        <IconButton
+          size="large"
+          edge="end"
+          color="inherit"
+          aria-label="notification"
+        >
+          <NotificationsNoneIcon sx={{ color: "black" }} />
+        </IconButton>
+        <IconButton sx={{ ml: 1 }} onClick={handleProfileMenuOpen}>
+          <Avatar alt="candy bekar" src={bird} />
+        </IconButton>
+      </Box>
+
+      <Box sx={{ display: { xs: "flex", md: "none" } }}>
+        <IconButton
+          size="large"
+          aria-label="show more"
+          aria-controls={mobileMenuId}
+          aria-haspopup="true"
+          onClick={handleMobileMenuOpen}
+          sx={{ color: "black" }}
+        >
+          <MoreIcon />
+        </IconButton>
+      </Box>
+    </>
   );
 
+  const handleSignOut = () => {};
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -118,22 +132,6 @@ const Header = () => {
           <Box sx={{ flexGrow: 1 }} />
 
           {isSignin === true ? afterSignin() : preSignin()}
-          {isSignin === false ? (
-            ""
-          ) : (
-            <Box sx={{ display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                sx={{ color: "black" }}
-              >
-                <MoreIcon />
-              </IconButton>
-            </Box>
-          )}
         </Toolbar>
       </AppBar>
       {openListAfterSignin === true ? (
@@ -156,6 +154,7 @@ const Header = () => {
           setIsSignin={setIsSignin}
           setOpenAccountList={setOpenAccountList}
           setOpenListAfterSignin={setOpenListAfterSignin}
+          handleSignOut={handleSignOut}
         />
       ) : (
         ""

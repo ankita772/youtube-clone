@@ -30,40 +30,14 @@ const AccountList = ({
   setIsSignin,
   setOpenAccountList,
   setOpenListAfterSignin,
+  handleSignout,
 }) => {
-  const auth = getAuth();
   const [snackbar, setSnackbar] = React.useState({
     open: false,
     severity: "info",
     message: "",
   });
 
-  const signout = () => {
-    signOut(auth)
-      .then(() => {
-        setSnackbar({
-          ...snackbar,
-          open: true,
-          severity: "success",
-          message: "Sign out successfully Completed",
-        });
-        setIsSignin(false);
-        setOpenAccountList(false);
-        setOpenListAfterSignin(false);
-        localStorage.clear();
-
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        setSnackbar({
-          ...snackbar,
-          open: true,
-          severity: "error",
-          message: error,
-        });
-        // An error happened.
-      });
-  };
   return (
     <>
       <Menu
@@ -105,7 +79,7 @@ const AccountList = ({
           <Typography sx={{ fontSize: "15px", p: 1 }}>Membership</Typography>
         </MenuItem>
 
-        <MenuItem onClick={signout}>
+        <MenuItem onClick={handleSignout}>
           <LogoutIcon />
           <Typography sx={{ fontSize: "15px", p: 1 }}>Sign Out</Typography>
         </MenuItem>

@@ -67,25 +67,6 @@ const Homepage = (props) => {
     setAllVideos(data);
   };
 
-  // const getUniqueChannel = async (channelId) => {
-  //   let fetchData = {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       id: channelId,
-  //     }),
-  //     headers: new Headers({
-  //       "Content-Type": "application/json",
-  //     }),
-  //   };
-  //   const res = await fetch(
-  //     "http://localhost:5000/get-unique-channel",
-  //     fetchData
-  //   );
-  //   const data = await res.json();
-
-  //   setChannelDetail(data[0]);
-  // };
-
   return (
     <React.Fragment>
       <CssBaseline />
