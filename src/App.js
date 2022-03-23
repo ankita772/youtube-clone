@@ -1,24 +1,18 @@
 import React from "react";
 import "./style.css";
-import Homepage from "./page/homepage";
-import Videopage from "./page/videopage";
-import SearchingVideosPage from "./page/searchingVideosPage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./Redux/store";
+import Routers from "./routes";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/videopage/:id" element={<Videopage />} />
-          <Route
-            path="/searchingVideosPage"
-            exact
-            element={<SearchingVideosPage />}
-          />
-        </Routes>
-      </BrowserRouter>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Routers />
+        </PersistGate>
+      </Provider>
     </>
   );
 }

@@ -7,7 +7,7 @@ import SaveAltIcon from "@mui/icons-material/SaveAlt";
 
 const VideoDetails = ({
   videoInfo,
-  // handleUpdateLike,
+  handleUpdateLike,
   // handleUpdateDislike,
 }) => {
   return (
@@ -34,7 +34,7 @@ const VideoDetails = ({
         >
           <Button
             startIcon={<ThumbUpAltIcon />}
-            // onClick={() => handleUpdateLike(videoInfo._id, videoInfo.like)}
+            onClick={() => handleUpdateLike(videoInfo._id, videoInfo.like)}
           >
             {videoInfo.like}
           </Button>

@@ -123,7 +123,8 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
       }),
     };
     const res = await fetch("http://localhost:5000/add-user", fetchData);
-    if (res) {
+    const data = await res.json();
+    if (data.userInfo) {
       setSnackbar({
         open: true,
         severity: "success",
@@ -131,6 +132,13 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
       });
       setIsSignup(true);
       setSignupModalOpen(false);
+    } else if (data.message) {
+      setSnackbar({
+        ...snackbar,
+        open: true,
+        severity: "error",
+        message: data.message,
+      });
     }
   };
 
@@ -186,7 +194,7 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
             </Typography>
             <Box sx={{ ml: 2, mt: 1 }}>
               <TextField
-                error={error.name}
+                error={error.name ? true : false}
                 helperText={error.name}
                 label="Name"
                 value={signupValues.name}
@@ -196,7 +204,7 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
               />
 
               <TextField
-                error={error.phone}
+                error={error.phone ? true : false}
                 helperText={error.phone}
                 label="Phone Number"
                 value={signupValues.phone}
@@ -206,14 +214,14 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
               />
 
               <Email
-                error={error.email}
+                error={error.email ? true : false}
                 helperText={error.email}
                 values={signupValues.email}
                 handleChangeEmail={handleChangeEmail("email")}
               />
 
               <Password
-                error={error.password}
+                error={error.password ? true : false}
                 helperText={error.password}
                 values={signupValues}
                 handleChangePassword={handleChangePassword("password")}

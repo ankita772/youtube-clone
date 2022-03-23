@@ -57,24 +57,26 @@ const Videopage = () => {
     navigate(`/videopage/${id}`);
   };
 
-  // //update like when clicked like button
-  // const handleUpdateLike = async (videoId, like) => {
-  //   let fetchData = {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       id: videoId,
-  //       like: like,
-  //     }),
-  //     headers: new Headers({
-  //       "Content-Type": "application/json",
-  //     }),
-  //   };
-  //   const res = await fetch("http://localhost:5000/update-like", fetchData);
-  //   const data = await res.json();
-  //   fetchVideoDetails();
-  //   //setClickedLike(true);
-  //   console.log(data);
-  // };
+  //update like when clicked like button
+  const handleUpdateLike = async (videoId, like) => {
+    const token = localStorage.getItem("userToken");
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        id: videoId,
+        like: like,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: token,
+      }),
+    };
+    const res = await fetch("http://localhost:5000/update-like", fetchData);
+    const data = await res.json();
+    fetchVideoDetails();
+    //setClickedLike(true);
+    console.log(data);
+  };
 
   // //update dislike when clicked dislike button
   // const handleUpdateDislike = async (videoId, dislike) => {
@@ -122,7 +124,7 @@ const Videopage = () => {
 
           <VideoDetails
             videoInfo={videoInfo}
-            //handleUpdateLike={handleUpdateLike}
+            handleUpdateLike={handleUpdateLike}
             //handleUpdateDislike={handleUpdateDislike}
           />
           <Divider />

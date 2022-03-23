@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //import files
 import bird from "../assets/bird.jpeg";
@@ -30,6 +30,13 @@ const Header = () => {
 
   const menuId = "primary-search-account-menu";
   const mobileMenuId = "primary-search-account-menu-mobile";
+
+  useEffect(() => {
+    const userToken = localStorage.getItem("userToken");
+    if (userToken) {
+      setIsSignin(true);
+    }
+  }, []);
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);

@@ -1,21 +1,17 @@
 import React from "react";
 import { Snackbar, Alert } from "@mui/material";
-const Notification = ({
-  open,
-  vertical,
-  horizontal,
-  severity,
-  message,
-  onClose,
-}) => {
+import { useDispatch } from "react-redux";
+import { destroyNotification } from "../Redux/Actions";
+const Notification = ({ open, vertical, horizontal, severity, message }) => {
+  const dispatch = useDispatch();
   return (
     <>
       <Snackbar
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         key={vertical + horizontal}
-        onClose={onClose}
+        onClose={() => dispatch(destroyNotification())}
       >
         <Alert severity={severity} sx={{ width: "100%" }}>
           {message}

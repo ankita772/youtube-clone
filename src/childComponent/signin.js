@@ -4,6 +4,8 @@ import Email from "./email";
 import Password from "./password";
 import Notification from "../component/notification";
 import { Box, Modal, Button, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../Redux/Actions";
 
 const style = {
   position: "absolute",
@@ -24,17 +26,14 @@ const Signin = ({ setIsSignin }) => {
     password: "",
     showPassword: false,
   });
-  const [snackbar, setSnackbar] = React.useState({
-    open: false,
-    severity: "success",
-    message: "",
-  });
 
   const [error, setError] = useState({
     email: "",
     password: "",
   });
 
+  const dispatch = useDispatch();
+  const authDetails = useSelector((state) => state.authDetails);
   //onchange for email
   const handleChangeEmail = (prop) => (event) => {
     setSigninValues({ ...signinValues, [prop]: event.target.value });
@@ -74,41 +73,14 @@ const Signin = ({ setIsSignin }) => {
   };
 
   //get user api
-
   const getUser = async () => {
-    let fetchData = {
-      method: "POST",
-      body: JSON.stringify({
-        email: signinValues.email,
-        password: signinValues.password,
-      }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
+    const body = {
+      email: signinValues.email,
+      password: signinValues.password,
     };
-
-    const res = await fetch("http://localhost:5000/login", fetchData);
-    const data = await res.json();
-    if (data.token) {
-      localStorage.setItem("userToken", data.token);
-      setSnackbar({
-        ...snackbar,
-        open: true,
-        severity: "success",
-        message: "Login compleated successfully",
-      });
-      setIsSignin(true);
-      setSigninModalOpen(false);
-    } else if (data.message) {
-      setSnackbar({
-        ...snackbar,
-        open: true,
-        severity: "error",
-        message: data.message,
-      });
-    }
+    dispatch(loginUser(body));
+    setSigninModalOpen(false);
   };
-  //after clicking signin button
 
   const handleSignin = () => {
     if (
@@ -155,13 +127,13 @@ const Signin = ({ setIsSignin }) => {
             </Typography>
             <Box sx={{ ml: 2, mt: 1 }}>
               <Email
-                error={error.email}
+                error={error.email ? true : false}
                 helperText={error.email}
                 values={signinValues.email}
                 handleChangeEmail={handleChangeEmail("email")}
               />
               <Password
-                error={error.password}
+                error={error.password ? true : false}
                 helperText={error.password}
                 values={signinValues}
                 handleChangePassword={handleChangePassword("password")}
@@ -181,16 +153,6 @@ const Signin = ({ setIsSignin }) => {
             </Box>
           </Box>
         </Modal>
-        <Notification
-          open={snackbar.open}
-          vertical="top"
-          horizontal="right"
-          severity={snackbar.severity}
-          message={snackbar.message}
-          onClose={() => {
-            setSnackbar({ ...snackbar, open: false });
-          }}
-        />
       </Box>
     </>
   );
