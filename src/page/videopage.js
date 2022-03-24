@@ -17,7 +17,7 @@ const Videopage = () => {
   const navigate = useNavigate();
   const [videoInfo, setVideoInfo] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
-
+  const [comment, setComment] = useState("");
   // const [clickedLike, setClickedLike] = useState(false);
   useEffect(() => {
     fetchVideoDetails();
@@ -74,7 +74,6 @@ const Videopage = () => {
     const res = await fetch("http://localhost:5000/update-like", fetchData);
     const data = await res.json();
     fetchVideoDetails();
-    //setClickedLike(true);
     console.log(data);
   };
 
@@ -95,6 +94,29 @@ const Videopage = () => {
   //   fetchVideoDetails();
   //   console.log(data);
   // };
+
+  const addComment = async () => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        message: comment,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+    };
+    const res = await fetch("http://localhost:5000/add-comment", fetchData);
+    const data = await res.json();
+    console.log(data);
+  };
+
+  const handleComment = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleSendComment = () => {
+    addComment();
+  };
 
   return (
     <React.Fragment>
@@ -131,7 +153,10 @@ const Videopage = () => {
           <VideoDescription videoInfo={videoInfo} />
           <Divider />
 
-          <AddComment />
+          <AddComment
+            handleComment={handleComment}
+            handleSendComment={handleSendComment}
+          />
           <Comment />
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4}>

@@ -1,7 +1,7 @@
 import { Grid, Avatar, FormControl, Input, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
-const AddComment = () => {
+const AddComment = ({ handleComment, handleSendComment }) => {
   return (
     <>
       <Grid container>
@@ -11,9 +11,14 @@ const AddComment = () => {
             <Input
               id="standard-adornment-amount"
               placeholder="Add a public comment"
+              onChange={handleComment}
             />
           </FormControl>
-          <IconButton aria-label="delete" disabled color="primary">
+          <IconButton
+            aria-label="delete"
+            color="primary"
+            onClick={handleSendComment}
+          >
             <SendIcon />
           </IconButton>
         </Grid>
