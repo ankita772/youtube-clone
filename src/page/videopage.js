@@ -11,10 +11,12 @@ import {
   VideoDetails,
   ListedVideo,
 } from "../component";
+import { useSelector } from "react-redux";
 
 const Videopage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const authdetails = useSelector((state) => state.auth);
   const [videoInfo, setVideoInfo] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
   const [comment, setComment] = useState("");
@@ -103,6 +105,7 @@ const Videopage = () => {
       }),
       headers: new Headers({
         "Content-Type": "application/json",
+        Authorization: "Bearer " + authdetails.token,
       }),
     };
     const res = await fetch("http://localhost:5000/add-comment", fetchData);
