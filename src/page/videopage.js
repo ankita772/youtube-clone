@@ -116,10 +116,6 @@ const Videopage = () => {
     setComment(e.target.value);
   };
 
-  const handleSendComment = () => {
-    addComment();
-  };
-
   return (
     <React.Fragment>
       <CssBaseline />
@@ -157,7 +153,7 @@ const Videopage = () => {
 
           <AddComment
             handleComment={handleComment}
-            handleSendComment={handleSendComment}
+            handleSendComment={addComment}
           />
           <Comment />
         </Grid>
