@@ -60,6 +60,7 @@ const Videopage = () => {
   //update like when clicked like button
   const handleUpdateLike = async (videoId, like) => {
     const token = localStorage.getItem("userToken");
+    console.log(token);
     let fetchData = {
       method: "POST",
       body: JSON.stringify({
@@ -68,13 +69,13 @@ const Videopage = () => {
       }),
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: "Bearer" + token,
       }),
     };
     const res = await fetch("http://localhost:5000/update-like", fetchData);
     const data = await res.json();
-    fetchVideoDetails();
     console.log(data);
+    fetchVideoDetails();
   };
 
   // //update dislike when clicked dislike button

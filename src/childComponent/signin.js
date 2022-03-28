@@ -79,6 +79,7 @@ const Signin = ({ setIsSignin }) => {
       password: signinValues.password,
     };
     dispatch(loginUser(body));
+    setIsSignin(true);
     setSigninModalOpen(false);
   };
 

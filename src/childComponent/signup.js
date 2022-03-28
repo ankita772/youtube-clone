@@ -124,22 +124,15 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
     };
     const res = await fetch("http://localhost:5000/add-user", fetchData);
     const data = await res.json();
-    if (data.userInfo) {
-      setSnackbar({
-        open: true,
-        severity: "success",
-        message: "User Sign Up Compleated Successfully",
-      });
-      setIsSignup(true);
-      setSignupModalOpen(false);
-    } else if (data.message) {
-      setSnackbar({
-        ...snackbar,
-        open: true,
-        severity: "error",
-        message: data.message,
-      });
-    }
+    console.log(data);
+
+    setSnackbar({
+      open: true,
+      severity: "success",
+      message: "User Sign Up Compleated Successfully",
+    });
+    setIsSignup(true);
+    setSignupModalOpen(false);
   };
 
   const handleSignup = () => {
