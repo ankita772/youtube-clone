@@ -19,9 +19,7 @@ const VideoDescription = ({ videoInfo }) => {
           </div>
         </Grid>
         <Grid item xs={4} sm={2} md={2} sx={{ mt: 2 }}>
-          <Button variant="contained">
-            {videoInfo?.channel_id?.subscriber}
-          </Button>
+          <Button variant="contained">subscriber</Button>
         </Grid>
       </Grid>
     </>
