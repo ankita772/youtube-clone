@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
+import Notification from "../component/notification";
 import {
   AppBar,
   CssBaseline,
@@ -30,6 +31,11 @@ const Videopage = () => {
   const [allVideos, setAllVideos] = useState([]);
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState([]);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    severity: "success",
+    message: "",
+  });
   // const [clickedLike, setClickedLike] = useState(false);
   useEffect(() => {
     fetchVideoDetails();
@@ -70,7 +76,7 @@ const Videopage = () => {
   };
 
   //update like when clicked like button
-  const handleUpdateLike = async (videoId, like) => {
+  const handleUpdateLike = async (videoId) => {
     let fetchData = {
       method: "POST",
       body: JSON.stringify({
@@ -81,9 +87,17 @@ const Videopage = () => {
         Authorization: "Bearer " + authdetails.token,
       }),
     };
-    const res = await fetch("http://localhost:5000/update-like", fetchData);
-    const data = await res.json();
-    fetchVideoDetails();
+    if (authdetails.token) {
+      const res = await fetch("http://localhost:5000/update-like", fetchData);
+      const data = await res.json();
+      fetchVideoDetails();
+    } else {
+      setSnackbar({
+        open: true,
+        severity: "error",
+        message: "user does not log in",
+      });
+    }
   };
 
   // //update dislike when clicked dislike button
@@ -212,6 +226,16 @@ const Videopage = () => {
           ))}
         </Grid>
       </Grid>
+      <Notification
+        open={snackbar.open}
+        vertical="top"
+        horizontal="right"
+        severity={snackbar.severity}
+        message={snackbar.message}
+        onClose={() => {
+          setSnackbar({ ...snackbar, open: false });
+        }}
+      />
     </React.Fragment>
   );
 };
