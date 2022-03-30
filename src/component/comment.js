@@ -1,6 +1,7 @@
 import { Grid, Typography, Box, Avatar } from "@mui/material";
+import moment from "moment";
 
-const Comment = () => {
+const Comment = ({ object }) => {
   return (
     <>
       <Grid container>
@@ -8,13 +9,15 @@ const Comment = () => {
           <Avatar alt="Cindy Baker" src="" />
           <div style={{ marginLeft: "2%" }}>
             <div style={{ display: "flex" }}>
-              <Box sx={{ fontSize: "12px", fontWeight: "bold" }}>Ankita</Box>
-              <Box sx={{ fontSize: "12px", ml: 1 }}>2 months ago</Box>
+              <Box sx={{ fontSize: "12px", fontWeight: "bold" }}>
+                {object.user_id.name}
+              </Box>
+              <Box sx={{ fontSize: "12px", ml: 1 }}>
+                {moment(object.uploaded_at).format("DD-MMM-YYYY")}
+              </Box>
             </div>
-            <Typography sx={{ fontSize: { xs: "8px", md: "15px" }, mt: 1 }}>
-              it is a comment line.it is a comment line.it is a comment line.it
-              is a comment line.it is a comment line.it is a comment line.it is
-              a comment line.it is a comment line
+            <Typography sx={{ fontSize: { xs: "12px", md: "15px" }, m: 1 }}>
+              {object.message}
             </Typography>
           </div>
         </Grid>

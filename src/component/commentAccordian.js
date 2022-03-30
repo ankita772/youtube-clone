@@ -2,7 +2,7 @@ import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import Comment from "./comment";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const CommentAccordian = () => {
+const CommentAccordian = ({ object }) => {
   return (
     <>
       <div>
@@ -12,10 +12,10 @@ const CommentAccordian = () => {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Comment />
+            l;;l;
           </AccordionSummary>
           <AccordionDetails>
-            <Comment />
+            <Comment object={object} />
           </AccordionDetails>
         </Accordion>
       </div>

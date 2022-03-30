@@ -3,7 +3,8 @@ import moment from "moment";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ShareIcon from "@mui/icons-material/Share";
-import SaveAltIcon from "@mui/icons-material/SaveAlt";
+
+import { WhatsappShareButton } from "react-share";
 
 const VideoDetails = ({
   videoInfo,
@@ -34,7 +35,7 @@ const VideoDetails = ({
         >
           <Button
             startIcon={<ThumbUpAltIcon />}
-            onClick={() => handleUpdateLike(videoInfo._id, videoInfo.like)}
+            onClick={() => handleUpdateLike(videoInfo._id)}
           >
             {videoInfo.like}
           </Button>
@@ -42,13 +43,13 @@ const VideoDetails = ({
           <Button
             startIcon={<ThumbDownAltIcon />}
             // onClick={() =>
-            //   handleUpdateDislike(videoInfo._id, videoInfo.dislike)
+            //   handleUpdateDislike(videoInfo._id)
             // }
           >
             {videoInfo.dislike}
           </Button>
+          {/* <WhatsappShareButton /> */}
           <Button startIcon={<ShareIcon />}>Share</Button>
-          <Button startIcon={<SaveAltIcon />}>Save</Button>
         </Grid>
       </Grid>
     </>

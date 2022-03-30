@@ -10,7 +10,9 @@ const VideoDescription = ({ videoInfo }) => {
             <Box sx={{ fontSize: "15px", fontWeight: "bold" }}>
               {videoInfo?.channel_id?.channel_name}
             </Box>
-            <Box sx={{ fontSize: "10px" }}>77k subscribers</Box>
+            <Box sx={{ fontSize: "10px" }}>
+              {videoInfo?.channel_id?.subscriber} subscribers
+            </Box>
             <Box sx={{ fontSize: { xs: "8px", md: "15px" }, mt: 2, mb: 2 }}>
               this is video Description .this is video Description . this is
               video Description . this is video Description .this is video
@@ -19,7 +21,7 @@ const VideoDescription = ({ videoInfo }) => {
           </div>
         </Grid>
         <Grid item xs={4} sm={2} md={2} sx={{ mt: 2 }}>
-          <Button variant="contained">subscriber</Button>
+          <Button variant="contained">subscribe</Button>
         </Grid>
       </Grid>
     </>
