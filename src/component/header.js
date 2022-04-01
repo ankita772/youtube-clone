@@ -220,7 +220,6 @@ const Header = () => {
                 onClick={() => navigate(`/videopage/${value._id}`)}
               >
                 <ListItemText sx={{ color: "black" }} primary={value.title} />
-                {console.log("====>", value)}
               </ListItemButton>
             </ListItem>
           ))}
