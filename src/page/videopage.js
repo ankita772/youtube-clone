@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import ReactPlayer from "react-player";
 import Notification from "../component/notification";
+import ShareModal from "../component/Modal";
+
 import {
   AppBar,
   CssBaseline,
@@ -21,12 +24,12 @@ import {
   VideoDetails,
   ListedVideo,
 } from "../component";
-import { useSelector } from "react-redux";
 
 const Videopage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const authdetails = useSelector((state) => state.auth);
+  const [shareModalOpen, setShareModal] = useState(false);
   const [videoInfo, setVideoInfo] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
   const [comment, setComment] = useState("");
@@ -100,23 +103,60 @@ const Videopage = () => {
     }
   };
 
-  // //update dislike when clicked dislike button
-  // const handleUpdateDislike = async (videoId) => {
-  //   let fetchData = {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       id: videoId,
-  //
-  //     }),
-  //     headers: new Headers({
-  //       "Content-Type": "application/json",
-  //     }),
-  //   };
-  //   const res = await fetch("http://localhost:5000/update-dislike", fetchData);
-  //   const data = await res.json();
-  //   fetchVideoDetails();
-  //   console.log(data);
-  // };
+  //update dislike when clicked dislike button
+  const handleUpdateDislike = async (videoId) => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        id: videoId,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authdetails.token,
+      }),
+    };
+    if (authdetails.token) {
+      const res = await fetch(
+        "http://localhost:5000/update-dislike",
+        fetchData
+      );
+      const data = await res.json();
+      fetchVideoDetails();
+    } else {
+      setSnackbar({
+        open: true,
+        severity: "error",
+        message: "user does not log in",
+      });
+    }
+  };
+
+  const handleUpdateSubs = async (videoId) => {
+    let fetchData = {
+      method: "POST",
+      body: JSON.stringify({
+        id: videoId,
+      }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authdetails.token,
+      }),
+    };
+    if (authdetails.token) {
+      const res = await fetch(
+        "http://localhost:5000/update-subscriber",
+        fetchData
+      );
+      const data = await res.json();
+      fetchVideoDetails();
+    } else {
+      setSnackbar({
+        open: true,
+        severity: "error",
+        message: "user does not log in",
+      });
+    }
+  };
 
   const handleComment = (e) => {
     setComment(e.target.value);
@@ -134,11 +174,18 @@ const Videopage = () => {
         Authorization: "Bearer " + authdetails.token,
       }),
     };
-    const res = await fetch("http://localhost:5000/add-comment", fetchData);
-    const data = await res.json();
-    console.log(data);
-    getAllComments(videoInfo._id);
-    setComment("");
+    if (authdetails.token) {
+      const res = await fetch("http://localhost:5000/add-comment", fetchData);
+      const data = await res.json();
+      getAllComments(videoInfo._id);
+      setComment("");
+    } else {
+      setSnackbar({
+        open: true,
+        severity: "error",
+        message: "user does not log in",
+      });
+    }
   };
 
   const getAllComments = async (videoId) => {
@@ -159,6 +206,10 @@ const Videopage = () => {
     const data = await res.json();
     console.log(data);
     setAllComments(data);
+  };
+
+  const handleShare = () => {
+    setShareModal(true);
   };
   return (
     <React.Fragment>
@@ -189,10 +240,14 @@ const Videopage = () => {
           <VideoDetails
             videoInfo={videoInfo}
             handleUpdateLike={handleUpdateLike}
-            //handleUpdateDislike={handleUpdateDislike}
+            handleUpdateDislike={handleUpdateDislike}
+            handleShare={handleShare}
           />
           <Divider />
-          <VideoDescription videoInfo={videoInfo} />
+          <VideoDescription
+            videoInfo={videoInfo}
+            handleUpdateSubs={handleUpdateSubs}
+          />
           <Divider />
 
           <AddComment
@@ -235,6 +290,11 @@ const Videopage = () => {
         onClose={() => {
           setSnackbar({ ...snackbar, open: false });
         }}
+      />
+      <ShareModal
+        shareModalOpen={shareModalOpen}
+        setShareModal={setShareModal}
+        videoUrl={videoInfo.url}
       />
     </React.Fragment>
   );

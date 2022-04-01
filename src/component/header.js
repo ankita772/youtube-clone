@@ -9,7 +9,18 @@ import Signup from "../childComponent/signup";
 import Signin from "../childComponent/signin";
 
 //import from material ui
-import { AppBar, Box, Toolbar, IconButton, Avatar } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Avatar,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 
 import MoreIcon from "@mui/icons-material/MoreVert";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
@@ -25,6 +36,9 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [leftbar, setLeftBar] = useState(false);
+  const [allVideos, setAllVideos] = useState([]);
+  const [filterData, setFilterData] = useState([]);
+  const [open, setOpen] = useState(false);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -32,10 +46,11 @@ const Header = () => {
   const mobileMenuId = "primary-search-account-menu-mobile";
 
   useEffect(() => {
-    const userToken = localStorage.getItem("userToken");
-    if (userToken) {
-      setIsSignin(true);
-    }
+    // const userToken = localStorage.getItem("userToken");
+    // if (userToken) {
+    //   setIsSignin(true);
+    // }
+    getAllVideos();
   }, []);
 
   const handleMobileMenuClose = () => {
@@ -59,12 +74,6 @@ const Header = () => {
     setOpenAccountList(false);
   };
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      navigate("/searchingVideosPage");
-    }
-  };
-
   const toggleDrawer = (isOpen) => (event) => {
     if (
       event.type === "keydown" &&
@@ -73,6 +82,30 @@ const Header = () => {
       return;
     }
     setLeftBar(isOpen);
+    console.log("ankita");
+  };
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      navigate("/searchingVideosPage");
+    }
+  };
+  const handleFilter = (e) => {
+    const data = e.target.value;
+    const filter = allVideos.filter((value) => {
+      return value.title.includes(data);
+    });
+    console.log("filtre", filter);
+    if (data === "") {
+      setFilterData([]);
+    } else {
+      setFilterData(filter);
+    }
+  };
+  const getAllVideos = async () => {
+    const res = await fetch("http://localhost:5000/get-all-videos");
+    const data = await res.json();
+    setAllVideos(data);
   };
 
   const preSignin = () => (
@@ -126,6 +159,7 @@ const Header = () => {
   );
 
   const handleSignOut = () => {};
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -134,6 +168,9 @@ const Header = () => {
             leftbar={leftbar}
             toggleDrawer={toggleDrawer}
             handleSearch={handleSearch}
+            handleFilter={handleFilter}
+            open={open}
+            setOpen={setOpen}
           />
 
           <Box sx={{ flexGrow: 1 }} />
@@ -166,6 +203,27 @@ const Header = () => {
       ) : (
         ""
       )}
+
+      {filterData.length !== 0 ? (
+        <List
+          sx={{
+            width: "100%",
+            bgcolor: "background.paper",
+            boxShadow: 5,
+            overflow: "auto",
+            maxHeight: 300,
+          }}
+        >
+          {filterData.map((value, index) => (
+            <ListItem>
+              <ListItemButton>
+                <ListItemText sx={{ color: "black" }} primary={value.title} />
+                {console.log("====>", value)}
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      ) : null}
     </Box>
   );
 };

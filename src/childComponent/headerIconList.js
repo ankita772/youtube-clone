@@ -1,6 +1,5 @@
 import React from "react";
-import Leftbar from "../childComponent/leftbar";
-
+import Leftbar from "./leftbar";
 import { styled, alpha } from "@mui/material/styles";
 import { IconButton, Typography, InputBase, Drawer } from "@mui/material";
 
@@ -50,7 +49,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const HeaderIconList = ({ leftbar, toggleDrawer, handleSearch }) => {
+const HeaderIconList = ({
+  leftbar,
+  toggleDrawer,
+  handleSearch,
+  handleFilter,
+}) => {
   const navigate = useNavigate();
   return (
     <>
@@ -63,11 +67,9 @@ const HeaderIconList = ({ leftbar, toggleDrawer, handleSearch }) => {
         onClick={toggleDrawer(true)}
       >
         <MenuIcon />
-        <Drawer anchor="left" open={leftbar} onClose={toggleDrawer(false)}>
-          <Leftbar
-            onKeyDown={toggleDrawer(false)}
-            onClick={toggleDrawer(false)}
-          />
+        <Drawer anchor="left" open={leftbar} onKeyDown={toggleDrawer(false)}>
+          {/* <Leftbar onKeyDown={toggleDrawer} onClick={toggleDrawer} /> */}
+          <Leftbar toggleDrawer={toggleDrawer} />
         </Drawer>
       </IconButton>
       <IconButton
@@ -104,9 +106,11 @@ const HeaderIconList = ({ leftbar, toggleDrawer, handleSearch }) => {
           placeholder="Search YouTube"
           inputProps={{ "aria-label": "search" }}
           onKeyPress={handleSearch}
+          onChange={handleFilter}
           sx={{ color: "black", boxShadow: "0.2px 0.2px 5px grey inset" }}
         />
       </Search>
+
       <IconButton
         size="large"
         edge="start"

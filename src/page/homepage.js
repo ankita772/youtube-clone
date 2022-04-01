@@ -75,8 +75,6 @@ const Homepage = (props) => {
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
 
-      {/* <Topic/> */}
-
       <div style={{ marginInline: "2%" }}>
         <Grid
           container

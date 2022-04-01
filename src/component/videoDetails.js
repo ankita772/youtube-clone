@@ -9,7 +9,8 @@ import { WhatsappShareButton } from "react-share";
 const VideoDetails = ({
   videoInfo,
   handleUpdateLike,
-  // handleUpdateDislike,
+  handleUpdateDislike,
+  handleShare,
 }) => {
   return (
     <>
@@ -42,14 +43,14 @@ const VideoDetails = ({
 
           <Button
             startIcon={<ThumbDownAltIcon />}
-            // onClick={() =>
-            //   handleUpdateDislike(videoInfo._id)
-            // }
+            onClick={() => handleUpdateDislike(videoInfo._id)}
           >
             {videoInfo.dislike}
           </Button>
           {/* <WhatsappShareButton /> */}
-          <Button startIcon={<ShareIcon />}>Share</Button>
+          <Button startIcon={<ShareIcon />} onClick={() => handleShare()}>
+            Share
+          </Button>
         </Grid>
       </Grid>
     </>

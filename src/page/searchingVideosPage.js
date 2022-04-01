@@ -1,5 +1,6 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import { useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Header from "../component/header";
 import {
@@ -86,7 +87,6 @@ const SearchingVideosPage = () => {
         <Header />
       </AppBar>
       <Grid container sx={{ mt: { xs: 8, sm: 8, md: 10 } }}>
-        {searchRelatedVideo()}
         {searchRelatedVideo()}
       </Grid>
     </>
