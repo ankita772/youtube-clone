@@ -15,9 +15,11 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import GridViewIcon from "@mui/icons-material/GridView";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
+  const authDetails = useSelector((state) => state.auth);
   const [isSignup, setIsSignup] = useState(false);
   const [isSignin, setIsSignin] = useState(false);
   const [openListAfterSignin, setOpenListAfterSignin] = useState(false);
@@ -32,11 +34,10 @@ const Header = () => {
   const mobileMenuId = "primary-search-account-menu-mobile";
 
   useEffect(() => {
-    const userToken = localStorage.getItem("userToken");
-    if (userToken) {
+    if (authDetails.token) {
       setIsSignin(true);
     }
-  }, []);
+  }, [authDetails]);
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -75,14 +76,14 @@ const Header = () => {
     setLeftBar(isOpen);
   };
 
-  const preSignin = () => (
+  const PreSignin = () => (
     <Box sx={{ display: "flex", mr: 2 }}>
-      <Signup setIsSignup={setIsSignup} isSignup={isSignup} />
-      <Signin setIsSignin={setIsSignin} />
+      <Signup />
+      <Signin />
     </Box>
   );
 
-  const afterSignin = () => (
+  const AfterSignin = () => (
     <>
       <Box
         sx={{
@@ -138,7 +139,7 @@ const Header = () => {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {isSignin === true ? afterSignin() : preSignin()}
+          {isSignin === true ? <AfterSignin /> : <PreSignin />}
         </Toolbar>
       </AppBar>
       {openListAfterSignin === true ? (

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
-import Notification from "../component/notification";
 import {
   AppBar,
   CssBaseline,
@@ -21,11 +20,13 @@ import {
   VideoDetails,
   ListedVideo,
 } from "../component";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { notificationService } from "../Redux/Actions";
 
 const Videopage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const authdetails = useSelector((state) => state.auth);
   const [videoInfo, setVideoInfo] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
@@ -92,11 +93,12 @@ const Videopage = () => {
       const data = await res.json();
       fetchVideoDetails();
     } else {
-      setSnackbar({
-        open: true,
-        severity: "error",
-        message: "user does not log in",
-      });
+      dispatch(
+        notificationService({
+          message: "User is not logged in",
+          severity: "error",
+        })
+      );
     }
   };
 
@@ -226,16 +228,6 @@ const Videopage = () => {
           ))}
         </Grid>
       </Grid>
-      <Notification
-        open={snackbar.open}
-        vertical="top"
-        horizontal="right"
-        severity={snackbar.severity}
-        message={snackbar.message}
-        onClose={() => {
-          setSnackbar({ ...snackbar, open: false });
-        }}
-      />
     </React.Fragment>
   );
 };

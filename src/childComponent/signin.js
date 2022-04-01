@@ -19,7 +19,7 @@ const style = {
   p: 4,
 };
 
-const Signin = ({ setIsSignin }) => {
+const Signin = () => {
   const [signinModalOpen, setSigninModalOpen] = useState(false);
   const [signinValues, setSigninValues] = useState({
     email: "",
@@ -79,7 +79,7 @@ const Signin = ({ setIsSignin }) => {
       password: signinValues.password,
     };
     dispatch(loginUser(body));
-    setIsSignin(true);
+
     setSigninModalOpen(false);
   };
 

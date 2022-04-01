@@ -7,7 +7,7 @@ const Notification = ({ open, vertical, horizontal, severity, message }) => {
   return (
     <>
       <Snackbar
-        autoHideDuration={4000}
+        autoHideDuration={2000}
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         key={vertical + horizontal}
