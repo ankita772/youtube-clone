@@ -21,14 +21,14 @@ import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-const Leftbar = ({ onKeyDown, onClick }) => {
+const Leftbar = ({ toggleDrawer }) => {
   return (
     <>
-      <Box sx={{ width: 220 }} role="presentation" onKeyDown={onKeyDown}>
+      <Box sx={{ width: 220 }} role="presentation">
         <List>
           <ListItem button key="Menubar">
             <ListItemIcon>
-              <IconButton onClick={onClick}>
+              <IconButton onClick={toggleDrawer(false)}>
                 <MenuIcon sx={{ color: "black" }} />
               </IconButton>
             </ListItemIcon>
