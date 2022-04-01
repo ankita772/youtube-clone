@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import validator from "validator";
 import Email from "./email";
 import Password from "./password";
-import Notification from "../component/notification";
 
 import { Box, Modal, Button, Typography, TextField } from "@mui/material";
+import { notificationService } from "../Redux/Actions";
+import { useDispatch } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -18,7 +19,8 @@ const style = {
   p: 4,
 };
 
-export default function TransitionsModal({ setIsSignup, isSignup }) {
+export default function TransitionsModal() {
+  const dispatch = useDispatch();
   const [signupModalOpen, setSignupModalOpen] = useState(false);
   const [signupValues, setSignupValues] = useState({
     name: "",
@@ -26,11 +28,6 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
     email: "",
     password: "",
     showPassword: false,
-  });
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    severity: "success",
-    message: "",
   });
 
   const [error, setError] = useState({
@@ -110,29 +107,35 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
   //add user api
 
   const addUser = async () => {
-    let fetchData = {
-      method: "POST",
-      body: JSON.stringify({
-        name: signupValues.name,
-        phone: signupValues.phone,
-        email: signupValues.email,
-        password: signupValues.password,
-      }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-    };
-    const res = await fetch("http://localhost:5000/add-user", fetchData);
-    const data = await res.json();
-    console.log(data);
+    try {
+      let fetchData = {
+        method: "POST",
+        body: JSON.stringify({
+          name: signupValues.name,
+          phone: signupValues.phone,
+          email: signupValues.email,
+          password: signupValues.password,
+        }),
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      };
+      const res = await fetch("http://localhost:5000/add-user", fetchData);
+      const data = await res.json();
+      console.log(data);
 
-    setSnackbar({
-      open: true,
-      severity: "success",
-      message: "User Sign Up Compleated Successfully",
-    });
-    setIsSignup(true);
-    setSignupModalOpen(false);
+      dispatch(
+        notificationService({
+          message: "User Sign Up Compleated Successfully",
+          severity: "success",
+        })
+      );
+      setSignupModalOpen(false);
+    } catch (error) {
+      dispatch(
+        notificationService({ message: error.message, severity: "error" })
+      );
+    }
   };
 
   const handleSignup = () => {
@@ -161,7 +164,6 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
     <>
       <Box sx={{ mr: 2 }}>
         <Button
-          disabled={isSignup}
           variant="outlined"
           sx={{
             color: "info",
@@ -234,16 +236,6 @@ export default function TransitionsModal({ setIsSignup, isSignup }) {
             </Box>
           </Box>
         </Modal>
-        <Notification
-          open={snackbar.open}
-          vertical="top"
-          horizontal="right"
-          severity={snackbar.severity}
-          message={snackbar.message}
-          onClose={() => {
-            setSnackbar({ ...snackbar, open: false });
-          }}
-        />
       </Box>
     </>
   );

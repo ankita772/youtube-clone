@@ -4,8 +4,6 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ShareIcon from "@mui/icons-material/Share";
 
-import { WhatsappShareButton } from "react-share";
-
 const VideoDetails = ({
   videoInfo,
   handleUpdateLike,
