@@ -51,6 +51,7 @@ const Header = () => {
     if (authDetails.token) {
       setIsSignin(true);
     }
+    getAllVideos();
   }, [authDetails]);
 
   const handleMobileMenuClose = () => {
