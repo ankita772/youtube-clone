@@ -58,4 +58,4 @@ class API {
   }
 }
 
-export default new API("http://localhost:5000/");
+export default new API("https://youtubeclone2.herokuapp.com/");

@@ -109,7 +109,9 @@ const Header = () => {
     }
   };
   const getAllVideos = async () => {
-    const res = await fetch("http://localhost:5000/get-all-videos");
+    const res = await fetch(
+      "https://youtubeclone2.herokuapp.com/get-all-videos"
+    );
     const data = await res.json();
     setAllVideos(data);
   };

@@ -57,7 +57,7 @@ const Videopage = () => {
       }),
     };
     const res = await fetch(
-      "http://localhost:5000/get-video-details",
+      "https://youtubeclone2.herokuapp.com/get-video-details",
       fetchData
     );
     const videoDetails = await res.json();
@@ -68,7 +68,9 @@ const Videopage = () => {
   //get all video details
 
   const getAllVideos = async () => {
-    const res = await fetch("http://localhost:5000/get-all-videos");
+    const res = await fetch(
+      "https://youtubeclone2.herokuapp.com/get-all-videos"
+    );
     const data = await res.json();
     setAllVideos(data);
   };
@@ -91,7 +93,10 @@ const Videopage = () => {
       }),
     };
     if (authdetails.token) {
-      const res = await fetch("http://localhost:5000/update-like", fetchData);
+      const res = await fetch(
+        "https://youtubeclone2.herokuapp.com/update-like",
+        fetchData
+      );
       const data = await res.json();
       fetchVideoDetails();
     } else {
@@ -118,7 +123,7 @@ const Videopage = () => {
     };
     if (authdetails.token) {
       const res = await fetch(
-        "http://localhost:5000/update-dislike",
+        "https://youtubeclone2.herokuapp.com/update-dislike",
         fetchData
       );
       const data = await res.json();
@@ -149,7 +154,10 @@ const Videopage = () => {
       }),
     };
     if (authdetails.token) {
-      const res = await fetch("http://localhost:5000/add-comment", fetchData);
+      const res = await fetch(
+        "https://youtubeclone2.herokuapp.com/add-comment",
+        fetchData
+      );
       const data = await res.json();
       getAllComments(videoInfo._id);
       setComment("");
@@ -174,7 +182,7 @@ const Videopage = () => {
       }),
     };
     const res = await fetch(
-      "http://localhost:5000/get-all-comments",
+      "https://youtubeclone2.herokuapp.com/get-all-comments",
       fetchData
     );
     const data = await res.json();

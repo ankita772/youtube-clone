@@ -120,7 +120,10 @@ export default function TransitionsModal() {
           "Content-Type": "application/json",
         }),
       };
-      const res = await fetch("http://localhost:5000/add-user", fetchData);
+      const res = await fetch(
+        "https://youtubeclone2.herokuapp.com/add-user",
+        fetchData
+      );
       const data = await res.json();
       console.log(data);
 
