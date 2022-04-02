@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, TextField, Modal, IconButton } from "@mui/material";
+import { Box, TextField, Modal, IconButton, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 const style = {
   position: "absolute",
@@ -20,6 +20,9 @@ const ShareModal = ({ shareModalOpen, setShareModal, videoUrl }) => {
   return (
     <Modal open={shareModalOpen} onClose={() => setShareModal(false)}>
       <Box sx={style}>
+        <Typography variant="h5" gutterBottom component="div">
+          Share
+        </Typography>
         <TextField
           id="outlined-read-only-input"
           defaultValue={videoUrl}

@@ -22,6 +22,7 @@ import {
 } from "../component";
 import { useDispatch, useSelector } from "react-redux";
 import { notificationService } from "../Redux/Actions";
+import ShareModal from "../component/Modal";
 
 const Videopage = () => {
   const { id } = useParams();
@@ -29,7 +30,7 @@ const Videopage = () => {
   const dispatch = useDispatch();
   const authdetails = useSelector((state) => state.auth);
   const [shareModalOpen, setShareModal] = useState(false);
-  const [videoInfo, setVideoInfo] = useState([]);
+  const [videoInfo, setVideoInfo] = useState({});
   const [allVideos, setAllVideos] = useState([]);
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState([]);
@@ -281,6 +282,11 @@ const Videopage = () => {
           ))}
         </Grid>
       </Grid>
+      <ShareModal
+        shareModalOpen={shareModalOpen}
+        setShareModal={setShareModal}
+        videoUrl={videoInfo.url}
+      />
     </React.Fragment>
   );
 };
