@@ -21,7 +21,7 @@ const Routers = () => {
         message={notification.message}
       />
 
-      <BrowserRouter basename="https://ankita772.github.io/youtube-clone/">
+      <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/videopage/:id" element={<Videopage />} />
