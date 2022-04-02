@@ -51,6 +51,7 @@ const Header = () => {
     if (authDetails.token) {
       setIsSignin(true);
     }
+    getAllVideos();
   }, [authDetails]);
 
   const handleMobileMenuClose = () => {
@@ -92,8 +93,9 @@ const Header = () => {
   };
   const handleFilter = (e) => {
     const data = e.target.value;
+    console.log(allVideos);
     const filter = allVideos.filter((value) => {
-      return value.title.includes(data);
+      return value.title.toLowerCase().includes(data.toLowerCase());
     });
     console.log("filtre", filter);
     if (data === "") {
