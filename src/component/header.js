@@ -191,20 +191,17 @@ const Header = () => {
       ) : (
         ""
       )}
-      {openAccountList === true ? (
-        <AccountList
-          anchorEl={anchorEl}
-          isMenuOpen={isMenuOpen}
-          menuId={menuId}
-          handleMenuClose={handleMenuClose}
-          setIsSignin={setIsSignin}
-          setOpenAccountList={setOpenAccountList}
-          setOpenListAfterSignin={setOpenListAfterSignin}
-          handleSignOut={handleSignOut}
-        />
-      ) : (
-        ""
-      )}
+
+      <AccountList
+        // anchorEl={anchorEl}
+        isMenuOpen={isMenuOpen}
+        menuId={menuId}
+        handleMenuClose={handleMenuClose}
+        setIsSignin={setIsSignin}
+        setOpenAccountList={setOpenAccountList}
+        setOpenListAfterSignin={setOpenListAfterSignin}
+        handleSignOut={handleSignOut}
+      />
 
       {filterData.length !== 0 ? (
         <List

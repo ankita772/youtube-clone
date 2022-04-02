@@ -67,11 +67,11 @@ const HeaderIconList = ({
         onClick={toggleDrawer(true)}
       >
         <MenuIcon />
-        <Drawer anchor="left" open={leftbar} onKeyDown={toggleDrawer(false)}>
-          {/* <Leftbar onKeyDown={toggleDrawer} onClick={toggleDrawer} /> */}
-          <Leftbar toggleDrawer={toggleDrawer} />
-        </Drawer>
       </IconButton>
+      <Drawer anchor="left" open={leftbar} onKeyDown={toggleDrawer(false)}>
+        {/* <Leftbar onKeyDown={toggleDrawer} onClick={toggleDrawer} /> */}
+        <Leftbar toggleDrawer={toggleDrawer} />
+      </Drawer>
       <IconButton
         size="large"
         edge="start"
