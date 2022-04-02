@@ -26,12 +26,13 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import GridViewIcon from "@mui/icons-material/GridView";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../Redux/Actions";
 
 const Header = () => {
   const navigate = useNavigate();
   const authDetails = useSelector((state) => state.auth);
-  const [isSignup, setIsSignup] = useState(false);
+  const dispatch = useDispatch();
   const [isSignin, setIsSignin] = useState(false);
   const [openListAfterSignin, setOpenListAfterSignin] = useState(false);
   const [openAccountList, setOpenAccountList] = useState(false);
@@ -50,6 +51,9 @@ const Header = () => {
   useEffect(() => {
     if (authDetails.token) {
       setIsSignin(true);
+    } else {
+      setIsSignin(false);
+      handleMenuClose();
     }
     getAllVideos();
   }, [authDetails]);
@@ -160,7 +164,10 @@ const Header = () => {
     </>
   );
 
-  const handleSignOut = () => {};
+  const handleSignOut = () => {
+    console.log("herer");
+    dispatch(logout());
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -216,7 +223,10 @@ const Header = () => {
           {filterData.map((value, index) => (
             <ListItem>
               <ListItemButton
-                onClick={() => navigate(`/videopage/${value._id}`)}
+                onClick={() => {
+                  navigate(`/videopage/${value._id}`);
+                  setFilterData([]);
+                }}
               >
                 <ListItemText sx={{ color: "black" }} primary={value.title} />
               </ListItemButton>

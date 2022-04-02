@@ -132,33 +132,6 @@ const Videopage = () => {
     }
   };
 
-  const handleUpdateSubs = async (videoId) => {
-    let fetchData = {
-      method: "POST",
-      body: JSON.stringify({
-        id: videoId,
-      }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + authdetails.token,
-      }),
-    };
-    if (authdetails.token) {
-      const res = await fetch(
-        "http://localhost:5000/update-subscriber",
-        fetchData
-      );
-      const data = await res.json();
-      fetchVideoDetails();
-    } else {
-      setSnackbar({
-        open: true,
-        severity: "error",
-        message: "user does not log in",
-      });
-    }
-  };
-
   const handleComment = (e) => {
     setComment(e.target.value);
   };
@@ -245,10 +218,7 @@ const Videopage = () => {
             handleShare={handleShare}
           />
           <Divider />
-          <VideoDescription
-            videoInfo={videoInfo}
-            handleUpdateSubs={handleUpdateSubs}
-          />
+          <VideoDescription videoInfo={videoInfo} />
           <Divider />
 
           <AddComment

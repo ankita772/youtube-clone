@@ -30,7 +30,7 @@ const AccountList = ({
   setIsSignin,
   setOpenAccountList,
   setOpenListAfterSignin,
-  handleSignout,
+  handleSignOut,
 }) => {
   const [snackbar, setSnackbar] = React.useState({
     open: false,
@@ -79,7 +79,7 @@ const AccountList = ({
           <Typography sx={{ fontSize: "15px", p: 1 }}>Membership</Typography>
         </MenuItem>
 
-        <MenuItem onClick={handleSignout}>
+        <MenuItem onClick={handleSignOut}>
           <LogoutIcon />
           <Typography sx={{ fontSize: "15px", p: 1 }}>Sign Out</Typography>
         </MenuItem>

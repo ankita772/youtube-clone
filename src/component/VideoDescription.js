@@ -1,6 +1,6 @@
 import { Grid, Box, Button, Avatar } from "@mui/material";
 
-const VideoDescription = ({ videoInfo, handleUpdateSubs }) => {
+const VideoDescription = ({ videoInfo }) => {
   return (
     <>
       <Grid container>
@@ -21,12 +21,7 @@ const VideoDescription = ({ videoInfo, handleUpdateSubs }) => {
           </div>
         </Grid>
         <Grid item xs={4} sm={2} md={2} sx={{ mt: 2 }}>
-          <Button
-            variant="contained"
-            onClick={() => handleUpdateSubs(videoInfo._id)}
-          >
-            subscribe
-          </Button>
+          <Button variant="contained">subscribe</Button>
         </Grid>
       </Grid>
     </>
