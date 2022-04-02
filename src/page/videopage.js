@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
@@ -39,6 +40,7 @@ const Videopage = () => {
     severity: "success",
     message: "",
   });
+  console.log(snackbar);
   // const [clickedLike, setClickedLike] = useState(false);
   useEffect(() => {
     fetchVideoDetails();
@@ -97,7 +99,7 @@ const Videopage = () => {
         "https://youtubeclone2.herokuapp.com/update-like",
         fetchData
       );
-      const data = await res.json();
+      await res.json();
       fetchVideoDetails();
     } else {
       dispatch(
@@ -126,7 +128,7 @@ const Videopage = () => {
         "https://youtubeclone2.herokuapp.com/update-dislike",
         fetchData
       );
-      const data = await res.json();
+      await res.json();
       fetchVideoDetails();
     } else {
       setSnackbar({
@@ -158,7 +160,7 @@ const Videopage = () => {
         "https://youtubeclone2.herokuapp.com/add-comment",
         fetchData
       );
-      const data = await res.json();
+      await res.json();
       getAllComments(videoInfo._id);
       setComment("");
     } else {

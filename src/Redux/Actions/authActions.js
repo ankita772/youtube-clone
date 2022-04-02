@@ -1,4 +1,4 @@
-import { REGISTER_USER, LOGIN_USER, LOGOUT_USER, NOTIFY } from "../actionTypes";
+import { LOGIN_USER, LOGOUT_USER, NOTIFY } from "../actionTypes";
 import Api from "../../Service/index";
 
 export const loginUser = (data) => {

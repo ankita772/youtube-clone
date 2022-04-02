@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import VideoTitle from "../childComponent/videoTitle";
 import moment from "moment";

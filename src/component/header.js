@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //import files
@@ -19,7 +20,6 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Typography,
 } from "@mui/material";
 
 import MoreIcon from "@mui/icons-material/MoreVert";
@@ -47,7 +47,7 @@ const Header = () => {
 
   const menuId = "primary-search-account-menu";
   const mobileMenuId = "primary-search-account-menu-mobile";
-
+  console.log(openAccountList);
   useEffect(() => {
     if (authDetails.token) {
       setIsSignin(true);

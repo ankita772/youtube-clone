@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import validator from "validator";
 import Email from "./email";
 import Password from "./password";
-import Notification from "../component/notification";
+
 import { Box, Modal, Button, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../Redux/Actions";
 
 const style = {
@@ -33,7 +33,7 @@ const Signin = () => {
   });
 
   const dispatch = useDispatch();
-  const authDetails = useSelector((state) => state.authDetails);
+
   //onchange for email
   const handleChangeEmail = (prop) => (event) => {
     setSigninValues({ ...signinValues, [prop]: event.target.value });

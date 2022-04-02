@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getAuth, signOut } from "firebase/auth";
+
 import Notification from "../component/notification";
 import {
   Menu,
@@ -27,9 +27,7 @@ const AccountList = ({
   isMenuOpen,
   menuId,
   handleMenuClose,
-  setIsSignin,
-  setOpenAccountList,
-  setOpenListAfterSignin,
+
   handleSignOut,
 }) => {
   const [snackbar, setSnackbar] = React.useState({

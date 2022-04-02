@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import ListedVideo from "./listedVideo";
+import React from "react";
+
 const VideoSuggestionList = ({ videosData, id }) => {
-  const [videoList, setVideoList] = useState([]);
   let array = [];
 
   const filterList = (obj) => {
@@ -12,7 +11,7 @@ const VideoSuggestionList = ({ videosData, id }) => {
     }
   };
   videosData.filter(filterList);
-  setVideoList(array);
 
   return <></>;
 };
+export default VideoSuggestionList;
