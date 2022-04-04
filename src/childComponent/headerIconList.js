@@ -98,9 +98,11 @@ const HeaderIconList = ({
           YouTube
         </Typography>
       </IconButton>
-      <Search sx={{ display: { xs: "none", sm: "none", md: "flex" } }}>
+      <Search sx={{ display: { md: "flex" } }}>
         <SearchIconWrapper>
-          <SearchIcon sx={{ color: "black" }} />
+          <SearchIcon
+            sx={{ fontSize: { xs: 12, sm: 15, md: 20 }, color: "black" }}
+          />
         </SearchIconWrapper>
         <StyledInputBase
           placeholder="Search YouTube"
